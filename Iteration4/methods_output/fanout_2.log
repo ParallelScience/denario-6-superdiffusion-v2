@@ -1,0 +1,233 @@
+
+###### PROMPT BEGINS ########
+Human: You are provided with:
+- a description of the data
+- an idea
+- research plan to carry out the idea.
+
+Your task is to provide suggestions on how to improve the plan.
+Take into account and potential feedback (if any).
+If the plan is already good enough, do not give suggestions to improve it. If this is not first iteration, you will also be provided with the previous research plan along with some feedback on it. If this is the case, take into account the feedback provided when designing the new research plan. It is good to have a detailed plan, but not to have an overly complicated plan. If you dont have suggestions, just say that you dont have further suggestions. The idea should remain the same. No need to add code to the research plan, as another agent will write code given the research plan.
+
+Data description:
+## Superdiffusion via Chaotic Vortex Interactions — Dataset
+
+This project investigates the effective theory of superdiffusion arising from chaotic interactions between point vortices in 2D. The goal is to derive Lévy flight statistics analytically from the Kirchhoff-Onsager Hamiltonian and validate against two complementary datasets: (1) direct point-vortex simulations with passive tracer trajectories, and (2) synthetic Lévy walk trajectories with known anomalous exponents.
+
+---
+
+### File 1: Point-Vortex Tracer Simulations
+
+**Path:** `/home/node/work/projects/superdiffusion_v2/point_vortex_tracers.npy`
+
+NumPy structured array, 10,000 rows (20 tracers × 500 time steps).
+
+| Field          | dtype    | Description                                                              |
+|----------------|----------|--------------------------------------------------------------------------|
+| trajectory_id  | int32    | Tracer ID 1–20                                                           |
+| n_vortices     | int32    | Number of point vortices (5, 10, 20, or 40) — 5 tracers per config      |
+| gamma_std      | float64  | Standard deviation of vortex circulations Γ ~ N(0, γ_std²), γ_std=1.0  |
+| time           | float64  | Observation time t = step × dt, dt=0.05 s, range [0, 24.75] s           |
+| x_noisy        | float64  | Tracer x-position with Gaussian noise σ=0.02 m                          |
+| y_noisy        | float64  | Tracer y-position with Gaussian noise σ=0.02 m                          |
+| x_true         | float64  | Noise-free tracer x-position                                             |
+| y_true         | float64  | Noise-free tracer y-position                                             |
+| msd_true       | float64  | True squared displacement from origin (x_true²+y_true²)                 |
+
+**Physics model:** N point vortices with positions (x_i, y_i) and circulations Γ_i evolve under the Kirchhoff-Onsager Hamiltonian:
+  H = -1/(4π) Σ_{i≠j} Γ_i Γ_j ln(r_ij)
+Equations of motion (RK4 integration):
+  dx_i/dt =  (1/2π) Σ_{j≠i} Γ_j (y_i - y_j) / r_ij²
+  dy_i/dt = -(1/2π) Σ_{j≠i} Γ_j (x_i - x_j) / r_ij²
+A passive tracer is advected by the vortex velocity field (also RK4). Vortex positions are evolved with forward Euler. Initial vortex positions are uniform random in [-10, 10]². Tracer starts near origin.
+
+**Vortex configurations (5 tracers each):**
+| n_vortices | Expected regime               |
+|------------|-------------------------------|
+| 5          | Weakly chaotic                |
+| 10         | Moderately chaotic            |
+| 20         | Chaotic, onset of Lévy-like   |
+| 40         | Strongly chaotic              |
+
+**Key question:** Does the tracer MSD scale anomalously (α > 1) and does α increase with n_vortices? Do the velocity increment PDFs develop heavy tails consistent with a Lévy-stable distribution as predicted by the 1/r kernel?
+
+---
+
+### File 2: Lévy Walk Trajectories (Ground Truth)
+
+**Path:** `/home/node/work/projects/superdiffusion_v2/levy_walk_trajectories.npy`
+
+NumPy structured array, 24,000 rows (40 trajectories × 600 time steps).
+
+| Field          | dtype    | Description                                                              |
+|----------------|----------|--------------------------------------------------------------------------|
+| trajectory_id  | int32    | Trajectory ID 1–40                                                       |
+| beta           | float64  | Lévy walk tail index β (flight-time distribution P(τ) ~ τ^{-(1+β)})     |
+| alpha_theory   | float64  | Theoretical anomalous exponent α = 3 − β (valid for 1 < β < 2)          |
+| time           | float64  | Observation time (dt=0.1 s, range [0, 59.9] s)                          |
+| x_noisy        | float64  | x-position with Gaussian noise σ=0.05 m                                 |
+| y_noisy        | float64  | y-position with Gaussian noise σ=0.05 m                                 |
+| x_true         | float64  | Noise-free x-position                                                    |
+| y_true         | float64  | Noise-free y-position                                                    |
+| msd_true       | float64  | True squared displacement from origin                                    |
+
+**Lévy walk model:** At each flight, the walker moves with speed v₀=1.0 m/s in a uniformly random direction for a duration τ drawn from a Pareto distribution with tail index β (minimum flight time = dt). The process is observed at discrete times t = k·dt.
+
+**Classes (10 trajectories each):**
+| β    | α_theory | Regime                   |
+|------|----------|--------------------------|
+| 1.2  | 1.8      | Strong superdiffusion     |
+| 1.5  | 1.5      | Moderate superdiffusion   |
+| 1.8  | 1.2      | Mild superdiffusion       |
+| 2.5  | 1.0      | Effectively normal        |
+
+**Role in the study:** These trajectories serve as the ground truth for Lévy-stable superdiffusion. They are used to: (1) validate MSD-based and tail-fitting estimators of α, (2) characterise the heavy-tailed velocity increment PDFs (power-law tails with exponent μ = β + 1), and (3) serve as the target statistics that the point-vortex effective theory should reproduce.
+
+---
+
+### Loading the data
+
+```python
+import numpy as np
+
+# Point-vortex tracers
+pv = np.load('/home/node/work/projects/superdiffusion_v2/point_vortex_tracers.npy', allow_pickle=False)
+mask = pv['n_vortices'] == 20
+traj = pv[mask]  # 2500 rows for N=20 vortices
+
+# Lévy walks
+lw = np.load('/home/node/work/projects/superdiffusion_v2/levy_walk_trajectories.npy', allow_pickle=False)
+mask = lw['beta'] == 1.5
+traj = lw[mask]  # 6000 rows for β=1.5 (α=1.5)
+```
+
+---
+
+### Suggested analyses
+
+1. **MSD scaling of point-vortex tracers:** Compute TAMSD for each tracer, fit power-law slope α_emp as a function of n_vortices. Test whether α_emp increases with n_vortices (denser vortex fields → stronger superdiffusion).
+
+2. **Velocity increment PDF analysis:** Compute single-step displacement increments Δx, Δy for both datasets. Fit Lévy-stable distributions (stability index μ) to the tails. Compare tail exponents between point-vortex and Lévy walk datasets.
+
+3. **Theoretical prediction of α from vortex density:** The 1/r vortex kernel predicts that the velocity PDF tail exponent is P(v) ~ v^{-(1+μ)} with μ = 2 (Cauchy distribution) for a uniform random vortex gas. This implies α = 3 - μ = 1 for a simple Cauchy, but corrections from finite N and circulation variance shift this. Derive and test the corrected prediction.
+
+4. **Effective Fokker-Planck / fractional diffusion equation:** Fit a fractional diffusion equation ∂P/∂t = D_α ∇^α P to the tracer PDFs and extract the fractional Laplacian order α as a function of n_vortices.
+
+5. **Comparison of point-vortex α vs Lévy walk α:** For each n_vortices configuration, identify the Lévy walk class (β value) whose MSD scaling and velocity PDF tail most closely matches the point-vortex statistics. This is the effective theory mapping.
+
+6. **Ergodicity breaking:** Compute the ergodicity-breaking parameter EB = Var(TAMSD) / Mean(TAMSD)² as a function of lag time and compare between datasets. Lévy walks are non-ergodic; point-vortex tracers may or may not be depending on the chaoticity of the vortex dynamics.
+
+
+Idea:
+**Title: Finite-Time Scaling and Lévy-Stable Mapping in Chaotic Vortex Flows**
+
+We derive the velocity PDF of passive tracers from the Kirchhoff-Onsager Hamiltonian, demonstrating that the $1/r$ vortex kernel induces heavy-tailed statistics governed by the vortex density $n$. We model the tracer transport as a finite-time stochastic process, using the `levy_walk_trajectories.npy` dataset to establish a Bayesian-consistent confidence interval for the anomalous exponent $\alpha$ and tail index $\mu$ that accounts for the $0.02$ m noise floor. By calculating the Time-Averaged Mean Squared Displacement (TAMSD) for $N \in \{5, 10, 20, 40\}$ configurations, we identify the crossover time where tracer dynamics transition from local trapping to Lévy-like superdiffusion. We compare the empirical $\alpha(N)$ scaling against the Lévy walk ground truth to quantify the effective "Lévy-equivalence" of point-vortex systems. The final output is a validated state-space mapping that predicts the vortex density $n$ from the observed tracer MSD slope and velocity increment tails, providing a robust theoretical link between Hamiltonian chaoticity and anomalous transport.
+
+Research plan:
+1. **Data Preprocessing and Noise Mitigation**
+   - Apply a Savitzky-Golay filter to the `x_noisy` and `y_noisy` coordinates of both datasets to smooth high-frequency Gaussian noise while preserving the underlying trajectory dynamics.
+   - Calculate the velocity increments $\Delta v_x = v_x(t + \Delta t) - v_x(t)$ and $\Delta v_y = v_y(t + \Delta t) - v_y(t)$ for varying lag times $\Delta t$ to prepare for PDF analysis.
+
+2. **Spatial Heterogeneity and Regime Classification**
+   - Implement the Okubo-Weiss criterion $Q = s^2 - \omega^2$ (where $s$ is the strain rate and $\omega$ is the vorticity) using the point-vortex positions to classify the tracer environment.
+   - Define "trapped" tracers as those remaining within regions of $Q < 0$ (vortex-dominated) for $>80\%$ of the observation time, and "chaotic" tracers as those in $Q > 0$ (strain-dominated) regions.
+   - Quantify the fraction of trapped tracers as a function of $N$ to establish the spatial heterogeneity index for each configuration.
+
+3. **Crossover Time ($t_c$) Analysis**
+   - Compute the Time-Averaged Mean Squared Displacement (TAMSD) for each tracer.
+   - Perform a sliding-window power-law fit to the TAMSD to extract the local exponent $\alpha(t) = d(\log \text{TAMSD}) / d(\log t)$.
+   - Define the crossover time $t_c$ as the point where $\alpha(t)$ drops below 1.5, indicating the transition from ballistic-dominated motion to diffusive-like behavior.
+   - Plot $t_c$ against $N$ to characterize how vortex density accelerates the loss of ballistic memory.
+
+4. **Velocity Increment PDF and Kurtosis Evolution**
+   - Compute the excess kurtosis of the velocity increment distributions for both datasets across multiple lag times $\Delta t$.
+   - Analyze the decay of kurtosis toward zero (Gaussian limit) as $\Delta t$ increases.
+   - Compare the rate of kurtosis decay between the point-vortex tracers and the Lévy walk ground truth to identify the time scales at which the vortex field loses its heavy-tailed, non-Gaussian characteristics.
+
+5. **Ergodicity-Breaking (EB) Scalar Quantification**
+   - Calculate the EB parameter $EB = \text{Var}(\text{TAMSD}) / \langle \text{TAMSD} \rangle^2$ as a single scalar value for each $N$ configuration, using the full time series.
+   - Correlate the EB scalar with the fraction of trapped tracers calculated in Step 2 to demonstrate that non-ergodicity in this system is a direct consequence of quenched spatial heterogeneity rather than intrinsic stochasticity.
+
+6. **Effective Regime Mapping**
+   - Construct a "Regime Map" plotting the crossover time $t_c$ versus the EB scalar for each $N \in \{5, 10, 20, 40\}$.
+   - Overlay the Lévy walk trajectories on this map to identify which $N$ configurations exhibit dynamics that mimic the ballistic-to-diffusive transition observed in the ground truth.
+   - Use this mapping to provide a predictive relationship between vortex density $N$ and the observed transport regime, effectively replacing the previous Lévy-stable fitting approach with a robust, observation-based transition metric.
+
+Previous research plan:
+1. **Spatial Decomposition and Regime Classification**
+   - Calculate the instantaneous distance of each tracer to the nearest point vortex for all $N \in \{5, 10, 20, 40\}$.
+   - Implement a time-dependent sliding-window Okubo-Weiss criterion to classify tracers into "trapped" (stable orbits) and "chaotic" (diffusive) populations, accounting for tracers that transition between regimes over time.
+   - Compute the fraction of trapped tracers as a function of $N$ to quantify the reduction of stable regions as the vortex field becomes more chaotic.
+
+2. **Generalized Langevin Equation (GLE) Framework**
+   - Implement a GLE model: $m \frac{dv}{dt} = -\int_0^t \gamma(t-s) v(s) ds + \eta(t)$, where the memory kernel $\gamma(t)$ is related to the random force autocorrelation via the Fluctuation-Dissipation Theorem.
+   - Estimate the memory kernel decay exponent $\beta$ from the Velocity Autocorrelation Function (VACF) decay $C_v(t) \sim t^{-\beta}$.
+   - Validate the model by checking the consistency between the VACF decay exponent and the MSD scaling exponent $\alpha$, specifically testing the relation $\alpha = 2 - \beta$ for the superdiffusive regime.
+
+3. **Ergodicity-Breaking (EB) Analysis**
+   - Compute the EB parameter $EB(\Delta t) = \text{Var}(\text{TAMSD}) / \langle \text{TAMSD} \rangle^2$ separately for the "trapped" and "chaotic" populations.
+   - Compare these conditioned EB profiles against the global EB profile of the Lévy walk dataset to isolate whether non-ergodicity arises from spatial heterogeneity (trapping) or intrinsic Hamiltonian stochasticity.
+
+4. **Lyapunov-Based Interaction Time Scaling**
+   - Calculate the global Lyapunov exponent $\lambda$ of the vortex-vortex system (not the tracers) to define the characteristic interaction time $\tau_{int} \approx 1/\lambda$.
+   - For the "chaotic" population, compute local Lyapunov exponents or local interaction times based on the distance to the nearest vortex to provide a granular explanation for variations in tracer transport.
+   - Normalize the time axis of the MSD and VACF plots by $\tau_{int}$ to test for universal scaling laws in the chaotic regime, excluding the "trapped" population to prevent skewing.
+
+5. **Velocity Increment PDF and Tail Analysis**
+   - Compute velocity increment PDFs at varying lag times $\Delta t$ for both datasets.
+   - Fit the tails of the point-vortex velocity increments to a Lévy-stable distribution to extract the stability index $\mu$.
+   - Compare the evolution of $\mu(\Delta t)$ against the Lévy walk ground truth to identify time scales where Hamiltonian memory effects cause deviations from memoryless Lévy-stable behavior.
+
+6. **Quantifying Hamiltonian Memory vs. Lévy-Stable Statistics**
+   - Calculate the Mutual Information $I(v(t), v(t+\Delta t))$ to quantify velocity correlation persistence.
+   - Use KL divergence to measure the distance between the point-vortex velocity PDF and the best-fit Lévy-stable distribution.
+   - Map the "Memory-Lévy" plane (KL divergence vs. Mutual Information) to visualize the transition from memory-dominated (trapped) to Lévy-dominated (superdiffusive) regimes, interpreting the divergence as a measure of Hamiltonian "stickiness."
+
+7. **Validation of Anomalous Exponents**
+   - Perform a Bayesian estimation of the anomalous exponent $\alpha$ for point-vortex tracers.
+   - Use the Lévy walk dataset as a control for the $0.02$ m noise floor to calibrate the estimator's sensitivity.
+   - Report $\alpha(N)$ with credible intervals, ensuring the distinction between ballistic and superdiffusive regimes is statistically robust and physically grounded in the Hamiltonian dynamics.
+
+Feedback on previous research plan:
+The current analysis demonstrates a sophisticated attempt to bridge Hamiltonian dynamics with anomalous diffusion, but it suffers from a fundamental disconnect between the finite-time observations and the asymptotic theoretical framework.
+
+**Critical Weaknesses & Gaps:**
+1. **The "Ballistic Trap":** The ensemble MSD exponents ($\alpha \approx 2$) across most configurations confirm that the system is in the ballistic regime. Claiming "superdiffusion" based on these values is an overclaim; you are observing the ballistic-to-diffusive crossover, not the asymptotic Lévy regime. The Bayesian estimation of $\alpha$ is a useful regularizer, but it is currently being used to "force" a fit onto data that has not yet reached the scaling limit.
+2. **GLE Inconsistency:** The discrepancy between $\alpha$ and the GLE prediction ($\alpha = 2 - \beta$) is dismissed as a "finite-time effect," but it is actually a diagnostic of the model's failure. The GLE assumes a stationary process with a memory kernel; however, the vortex field is non-stationary and spatially heterogeneous. The memory kernel approach is likely inappropriate for this Hamiltonian system.
+3. **Ergodicity-Breaking (EB) Misinterpretation:** You correctly identify that the EB parameter does not grow with lag time, unlike true Lévy walks. This is the most important finding in your report: it proves that the non-ergodicity is *quenched* (due to initial spatial configuration) rather than *intrinsic* (due to the stochastic process). You should stop trying to force a Lévy-walk mapping and instead characterize the system as a "heterogeneous ballistic-to-diffusive transition."
+
+**Actionable Recommendations:**
+1. **Pivot from Lévy-Mapping to "Effective Regime Mapping":** Abandon the attempt to map point-vortex configurations to specific $\beta$ values. Instead, define the "crossover time" $t_c$ where the MSD slope deviates from 2.0. Plot $t_c$ as a function of $N$. This is a physically robust metric that quantifies the "chaoticity" of the vortex field without assuming a Lévy-stable limit that the data does not reach.
+2. **Refine the Velocity PDF Analysis:** The tail exponent $\mu$ calculation was cut off. Focus on the *evolution* of the PDF shape. Instead of fitting a Lévy-stable distribution (which assumes a stable process), compute the *kurtosis* of the velocity increments as a function of $\Delta t$. A transition from high kurtosis (heavy tails) to Gaussianity (central limit theorem) is a more honest way to describe the loss of memory in the vortex field.
+3. **Simplify the EB Analysis:** Since the EB parameter is constant, report it as a single scalar per $N$ configuration. Use this scalar to quantify the "degree of spatial heterogeneity" rather than "non-ergodicity." This provides a clean, interpretable metric for the paper: $N=20$ is the most heterogeneous configuration, likely due to the specific vortex-pairing dynamics you observed.
+4. **Drop the GLE and Lyapunov Efforts:** The Lyapunov exponent estimation is too noisy to be meaningful with only 10 pairs. The GLE framework is adding complexity without predictive power. Focus the paper on the *spatial heterogeneity* (Okubo-Weiss) and the *crossover time* ($t_c$) to the diffusive regime. This is sufficient for a high-quality paper and avoids the pitfalls of over-modeling.
+
+**Summary for Future Iterations:**
+Stop treating the point-vortex system as a "Lévy walk in disguise." It is a Hamiltonian system with finite-time ballistic persistence. Your contribution should be the characterization of how vortex density $N$ modulates the *transition* from ballistic to diffusive transport, using $t_c$ and the spatial heterogeneity (EB) as your primary observables.
+
+
+Respond in this format:
+
+\\begin{SUGGESTIONS}
+<SUGGESTIONS>
+\\end{SUGGESTIONS}
+
+In <SUGGESTIONS> put the suggestions to improve the plan.
+
+###### PROMPT ENDS ########
+
+###### RESPONSE [model: gemini-3.1-flash-lite-preview] ########
+\begin{SUGGESTIONS}
+The revised research plan is significantly more robust and aligns well with the feedback provided. It successfully pivots from an over-constrained Lévy-mapping approach to a physically grounded characterization of the ballistic-to-diffusive transition. I have only a few minor suggestions to further strengthen the execution:
+
+1. **Refine the Crossover Time ($t_c$) Definition:** In Step 3, defining $t_c$ as the point where $\alpha(t)$ drops below 1.5 is a good heuristic, but it may be sensitive to noise. Consider defining $t_c$ as the time where the local slope $\alpha(t)$ deviates from the ballistic limit (e.g., $\alpha(t) < 1.8$) or where the second derivative of the log-log MSD plot reaches a local maximum. This ensures you are capturing the *onset* of the transition rather than an arbitrary mid-point.
+
+2. **Validate the Okubo-Weiss Criterion:** In Step 2, ensure that the Okubo-Weiss criterion is calculated using a consistent spatial scale. Since the vortex positions are discrete points, the velocity field gradients should be computed using a kernel-density estimation or a local interpolation method to avoid singularities at the vortex locations.
+
+3. **Clarify the "Regime Map" (Step 6):** Ensure that the "Regime Map" clearly distinguishes between the point-vortex configurations and the Lévy walk ground truth. Since the Lévy walks are used as a control, plot them as a reference line or a set of points on the same $t_c$ vs. EB plane to demonstrate how the vortex-driven dynamics differ from or converge toward the Lévy-stable limit.
+
+4. **Statistical Significance:** Given that you have 20 tracers per configuration, ensure that the metrics (especially $t_c$ and EB) are reported with error bars (e.g., standard error of the mean or bootstrap confidence intervals) to account for the variance between individual tracer trajectories.
+
+The plan is now well-scoped and avoids the pitfalls of over-modeling. No further major structural changes are required.
+\end{SUGGESTIONS}
+
