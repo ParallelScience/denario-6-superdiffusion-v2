@@ -1,0 +1,50 @@
+\documentclass[]{article}
+
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{graphicx} 
+
+
+\begin{document}
+
+This study combines numerical simulations of a deterministic Hamiltonian system with a stochastic null model to investigate the mechanisms of anomalous transport. We analyze tracer trajectories using a suite of statistical tools designed to characterize diffusion, memory effects, and ergodicity.
+
+\subsection{Numerical simulations and datasets}
+
+The primary dataset consists of numerically simulated trajectories of passive tracers in a two-dimensional point-vortex flow. The system is defined by $N$ point vortices of equal circulation confined within a square domain with periodic boundary conditions. We investigate four distinct configurations corresponding to vortex densities of $N \in \{5, 10, 20, 40\}$, which control the system's chaoticity. For each configuration, a large ensemble of tracer trajectories was generated, with each trajectory simulated for a total duration of 24.95 s. To assess the robustness of our findings to measurement uncertainty, two versions of each trajectory were created: a noise-free (`true`) dataset representing the exact numerical solution, and a `noisy` dataset where independent Gaussian noise with a standard deviation of 0.02 m was added to each position coordinate at every time step.
+
+As a null model for memoryless anomalous transport, we employ a canonical one-dimensional L\'evy walk. Trajectories were generated with flight times drawn from a power-law distribution and constant speed, resulting in superdiffusive transport. Multiple classes of L\'evy walks were generated, characterized by different power-law exponents $\beta$, which directly control the anomalous diffusion exponent $\alpha$. This dataset serves as a benchmark to isolate the effects of Hamiltonian memory present in the point-vortex system.
+
+\subsection{Noise filtering and data pre-processing}
+
+Given the potential for measurement noise to artificially inflate the tails of displacement distributions, a systematic pre-processing step was implemented. We applied a Savitzky-Golay filter to the noisy position trajectories. A sensitivity analysis was performed by varying the filter's window size to find an optimal balance between suppressing high-frequency noise and preserving the underlying physical dynamics. Based on this analysis, a window size of 7 time steps was selected for the $N=20$ and $N=40$ configurations, as it effectively removed noise artifacts while retaining the heavy-tailed characteristics of the velocity increments. For the sparser configurations ($N=5$ and $N=10$), the signal-to-noise ratio was found to be too low for effective filtering; therefore, all mechanistic analyses for these cases were performed exclusively on the noise-free `true` data.
+
+\subsection{Transport and memory analysis}
+
+To characterize the transport properties, we computed the ensemble-averaged mean squared displacement (EAMSD) for each system, defined as $\langle \mathbf{r}^2(\Delta t) \rangle = \langle |\mathbf{r}(t_0 + \Delta t) - \mathbf{r}(t_0)|^2 \rangle$, where the average is taken over all tracers and initial times $t_0$. The anomalous diffusion exponent, $\alpha$, was determined by fitting a power law to the EAMSD data,
+\begin{equation}
+\langle \mathbf{r}^2(\Delta t) \rangle \sim (\Delta t)^\alpha,
+\end{equation}
+over an intermediate range of lag times $\Delta t$ using linear regression on a log-log scale.
+
+To probe the underlying dynamics and memory effects, we analyzed the velocity autocorrelation function (VACF),
+\begin{equation}
+C_v(\Delta t) = \frac{\langle \mathbf{v}(t) \cdot \mathbf{v}(t + \Delta t) \rangle}{\langle |\mathbf{v}(t)|^2 \rangle},
+\end{equation}
+where $\mathbf{v}(t)$ is the tracer velocity. The decay profile of the VACF provides a direct measure of how quickly the system loses memory of its velocity. We compared the functional form of the decay (e.g., exponential versus power-law) and the zero-crossing time across different vortex densities and against the memoryless L\'evy walk model. These findings were further corroborated by computing the mutual information $I(v(t), v(t+\Delta t))$ between velocities at different lag times, which captures potential non-linear correlations missed by the VACF.
+
+The prevalence of tracer trapping was quantified by analyzing residence times. A tracer was defined as being in a "trapped" state whenever its instantaneous speed fell below the 25th percentile of the speed distribution for its respective $N$ configuration. The distribution of durations of these trapping events, $P(\tau_{res})$, was computed. We then fitted a power-law model, $P(\tau_{res}) \sim \tau_{res}^{-\gamma}$, to the tail of this distribution using maximum likelihood estimation to characterize the statistics of long-lived trapping events.
+
+\subsection{Ergodicity and stationarity metrics}
+
+To investigate temporal fluctuations in transport behavior and potential ergodicity breaking, we employed metrics based on the time-averaged MSD (TAMSD), calculated for individual trajectories. The local anomalous exponent, $\alpha(t)$, was estimated using a sliding-window approach on the TAMSD to reveal non-stationarity in the diffusion process.
+
+The degree of ergodicity breaking was quantified using the parameter $EB(\Delta)$, defined as the relative variance of the TAMSD across the ensemble:
+\begin{equation}
+EB(\Delta) = \frac{\text{Var}[\overline{\delta^2(\Delta)}]}{(\text{E}[\overline{\delta^2(\Delta)}])^2},
+\end{equation}
+where $\overline{\delta^2(\Delta)}$ is the TAMSD at lag time $\Delta$, and $\text{Var}[\cdot]$ and $\text{E}[\cdot]$ denote the variance and mean over the ensemble of all tracers, respectively. A value of $EB > 0$ indicates a deviation from ergodicity, reflecting heterogeneity in the transport dynamics among different tracers. This metric was used to quantitatively compare the non-ergodic properties of the point-vortex system with those of the L\'evy walk null model.
+
+\end{document}
+                

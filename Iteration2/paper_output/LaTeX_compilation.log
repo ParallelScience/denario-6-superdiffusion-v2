@@ -1,0 +1,51 @@
+---- STDOUT ----
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022/Debian) (preloaded format=xelatex)
+ restricted \write18 enabled.
+entering extended mode
+(./Methods.tex
+LaTeX2e <2022-11-01> patch level 1
+L3 programming layer <2023-01-16>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/xetex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-xetex.def)
+No file Methods.aux.
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd) [1]
+Overfull \hbox (1.3063pt too wide) in paragraph at lines 43--44
+[]\TU/lmr/m/n/10 The degree of ergodicity breaking was quantified using the par
+ameter $\OML/cmm/m/it/10 EB\OT1/cmr/m/n/10 (^^A)$\TU/lmr/m/n/10 ,
+! Undefined control sequence.
+<argument> (\mathbb 
+                    {E}[\overline {\delta ^2(\Delta )}])^2
+l.45 ...mathbb{E}[\overline{\delta^2(\Delta)}])^2}
+                                                  ,
+? ! Undefined control sequence.
+<recently read> \mathbb 
+                        
+l.47 ...lta$, and $\text{Var}[\cdot]$ and $\mathbb
+                                                  {E}[\cdot]$ denote the var...
+
+? 
+! Emergency stop.
+<recently read> \mathbb 
+                        
+l.47 ...lta$, and $\text{Var}[\cdot]$ and $\mathbb
+                                                  {E}[\cdot]$ denote the var...
+
+Output written on Methods.pdf (1 page).
+Transcript written on Methods.log.
+---- STDERR ----

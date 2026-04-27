@@ -1,0 +1,136 @@
+\documentclass[]{article}
+
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{graphicx} 
+\usepackage{tabularx}
+
+
+
+\begin{document}
+
+\title{Finite-Time Scaling and Lévy-Stable Mapping in Chaotic Vortex Flows}
+
+\author{Denario}
+\date{Anthropic, Gemini \& OpenAI servers. Planet Earth.}
+
+\maketitle
+\begin{abstract}
+The connection between deterministic chaos in Hamiltonian systems and emergent anomalous transport statistics remains a key challenge, with complex dynamics often simplified to stochastic models like Lévy walks. To probe this relationship, we numerically simulate passive tracer transport in two-dimensional point-vortex systems of varying vortex density ($N$) and contrast the dynamics against a memoryless Lévy walk null model. By analyzing mean squared displacement, velocity autocorrelation, and residence time distributions, while systematically accounting for measurement noise, we uncover a non-monotonic relationship between vortex density and transport behavior. Sparse to intermediate density configurations ($N \le 20$) display near-ballistic motion ($\alpha \approx 2$), whereas the densest system ($N=40$) transitions to a distinct superdiffusive regime ($\alpha \approx 1.68$). Mechanistic analysis reveals this transition is driven by features absent in the stochastic model; the point-vortex system exhibits significant Hamiltonian memory, evidenced by long-lived velocity correlations and heavy-tailed residence time distributions indicative of tracer trapping. Our findings demonstrate that vortex density controls a complex transition between transport regimes and establish that deterministic memory is a crucial feature distinguishing these chaotic flows from their simpler stochastic approximations.
+\end{abstract}
+
+
+
+
+
+
+
+
+\section{Introduction}
+\label{sec:intro}
+The connection between microscopic, deterministic laws and emergent, macroscopic statistical behavior is a foundational challenge in statistical physics. In numerous complex systems, from turbulent fluids to financial markets, this link is expressed through anomalous transport, where a particle's mean squared displacement grows non-linearly with time as $\langle x^2(t) \rangle \sim t^\alpha$, with an exponent $\alpha \neq 1$. Understanding the physical mechanisms driving such behavior, particularly superdiffusion ($\alpha > 1$), remains an active area of research. The challenge is especially pronounced in systems governed by Hamiltonian dynamics, where the absence of dissipation preserves long-range correlations and memory effects that can fundamentally alter transport properties.
+
+Chaotic advection in two-dimensional fluid flows serves as a canonical paradigm for exploring these phenomena. The idealized model of point vortices, which describes the motion of passive tracers in a field of interacting vortices, provides a tractable yet physically rich Hamiltonian framework. The long-range velocity fields induced by the vortices create a complex and dynamic environment. Tracers can become trapped for extended periods in quasi-regular regions around vortex cores or be ejected into chaotic regions, undertaking long, nearly ballistic flights. This intricate interplay between trapping and flight events is known to generate heavy-tailed velocity distributions and, consequently, superdiffusive transport statistics.
+
+A common strategy for modeling such complex transport is to replace the underlying deterministic dynamics with a simpler stochastic process, such as a Lévy walk. These models, built upon random, independent steps drawn from a heavy-tailed probability distribution, can successfully reproduce the superdiffusive scaling observed in many physical systems. However, this simplification comes at a significant cost: by construction, memoryless stochastic models neglect the persistent correlations and deterministic structure inherent to Hamiltonian systems. This raises a critical question: under what conditions can the transport in a deterministic chaotic flow be faithfully represented by a simple stochastic process, and what are the key physical mechanisms that cause this description to break down?
+
+In this paper, we address this question by systematically investigating passive tracer transport in a two-dimensional point-vortex system. We perform numerical simulations across a range of vortex densities, a key physical parameter that controls the system's chaoticity. To isolate the role of deterministic memory, we directly compare the transport statistics of the vortex system against those of a canonical memoryless Lévy walk, which serves as a null model. Our analysis extends beyond the mean squared displacement to include mechanistic diagnostics such as velocity autocorrelation functions and residence time distributions, allowing us to probe the underlying dynamics. By rigorously accounting for the effects of finite-time trajectories and measurement noise, we distinguish genuine physical phenomena from statistical artifacts. Our findings reveal a non-monotonic relationship between vortex density and transport, where sparse systems exhibit near-ballistic motion while denser configurations transition to a distinct superdiffusive regime. We demonstrate that this transition is governed by deterministic memory effects, such as tracer trapping, which have no analog in the stochastic model. This work clarifies the limits of applying simple stochastic models to complex Hamiltonian flows and highlights the crucial role of deterministic memory in shaping anomalous transport.
+
+\section{Methods}
+\label{sec:methods}
+This study combines numerical simulations of a deterministic Hamiltonian system with a stochastic null model to investigate the mechanisms of anomalous transport. We analyze tracer trajectories using a suite of statistical tools designed to characterize diffusion, memory effects, and ergodicity.
+
+\subsection{Numerical simulations and datasets}
+
+The primary dataset consists of numerically simulated trajectories of passive tracers in a two-dimensional point-vortex flow. The system is defined by $N$ point vortices of equal circulation confined within a square domain with periodic boundary conditions. We investigate four distinct configurations corresponding to vortex densities of $N \in \{5, 10, 20, 40\}$, which control the system's chaoticity. For each configuration, a large ensemble of tracer trajectories was generated, with each trajectory simulated for a total duration of 24.95 s. To assess the robustness of our findings to measurement uncertainty, two versions of each trajectory were created: a noise-free (`true`) dataset representing the exact numerical solution, and a `noisy` dataset where independent Gaussian noise with a standard deviation of 0.02 m was added to each position coordinate at every time step.
+
+As a null model for memoryless anomalous transport, we employ a canonical one-dimensional L\'evy walk. Trajectories were generated with flight times drawn from a power-law distribution and constant speed, resulting in superdiffusive transport. Multiple classes of L\'evy walks were generated, characterized by different power-law exponents $\beta$, which directly control the anomalous diffusion exponent $\alpha$. This dataset serves as a benchmark to isolate the effects of Hamiltonian memory present in the point-vortex system.
+
+\subsection{Noise filtering and data pre-processing}
+
+Given the potential for measurement noise to artificially inflate the tails of displacement distributions, a systematic pre-processing step was implemented. We applied a Savitzky-Golay filter to the noisy position trajectories. A sensitivity analysis was performed by varying the filter's window size to find an optimal balance between suppressing high-frequency noise and preserving the underlying physical dynamics. Based on this analysis, a window size of 7 time steps was selected for the $N=20$ and $N=40$ configurations, as it effectively removed noise artifacts while retaining the heavy-tailed characteristics of the velocity increments. For the sparser configurations ($N=5$ and $N=10$), the signal-to-noise ratio was found to be too low for effective filtering; therefore, all mechanistic analyses for these cases were performed exclusively on the noise-free `true` data.
+
+\subsection{Transport and memory analysis}
+
+To characterize the transport properties, we computed the ensemble-averaged mean squared displacement (EAMSD) for each system, defined as $\langle \mathbf{r}^2(\Delta t) \rangle = \langle |\mathbf{r}(t_0 + \Delta t) - \mathbf{r}(t_0)|^2 \rangle$, where the average is taken over all tracers and initial times $t_0$. The anomalous diffusion exponent, $\alpha$, was determined by fitting a power law to the EAMSD data,
+\begin{equation}
+\langle \mathbf{r}^2(\Delta t) \rangle \sim (\Delta t)^\alpha,
+\end{equation}
+over an intermediate range of lag times $\Delta t$ using linear regression on a log-log scale.
+
+To probe the underlying dynamics and memory effects, we analyzed the velocity autocorrelation function (VACF),
+\begin{equation}
+C_v(\Delta t) = \frac{\langle \mathbf{v}(t) \cdot \mathbf{v}(t + \Delta t) \rangle}{\langle |\mathbf{v}(t)|^2 \rangle},
+\end{equation}
+where $\mathbf{v}(t)$ is the tracer velocity. The decay profile of the VACF provides a direct measure of how quickly the system loses memory of its velocity. We compared the functional form of the decay (e.g., exponential versus power-law) and the zero-crossing time across different vortex densities and against the memoryless L\'evy walk model. These findings were further corroborated by computing the mutual information $I(v(t), v(t+\Delta t))$ between velocities at different lag times, which captures potential non-linear correlations missed by the VACF.
+
+The prevalence of tracer trapping was quantified by analyzing residence times. A tracer was defined as being in a "trapped" state whenever its instantaneous speed fell below the 25th percentile of the speed distribution for its respective $N$ configuration. The distribution of durations of these trapping events, $P(\tau_{res})$, was computed. We then fitted a power-law model, $P(\tau_{res}) \sim \tau_{res}^{-\gamma}$, to the tail of this distribution using maximum likelihood estimation to characterize the statistics of long-lived trapping events.
+
+\subsection{Ergodicity and stationarity metrics}
+
+To investigate temporal fluctuations in transport behavior and potential ergodicity breaking, we employed metrics based on the time-averaged MSD (TAMSD), calculated for individual trajectories. The local anomalous exponent, $\alpha(t)$, was estimated using a sliding-window approach on the TAMSD to reveal non-stationarity in the diffusion process.
+
+The degree of ergodicity breaking was quantified using the parameter $EB(\Delta)$, defined as the relative variance of the TAMSD across the ensemble:
+\begin{equation}
+EB(\Delta) = \frac{\text{Var}[\overline{\delta^2(\Delta)}]}{(\text{E}[\overline{\delta^2(\Delta)}])^2},
+\end{equation}
+where $\overline{\delta^2(\Delta)}$ is the TAMSD at lag time $\Delta$, and $\text{Var}[\cdot]$ and $\text{E}[\cdot]$ denote the variance and mean over the ensemble of all tracers, respectively. A value of $EB > 0$ indicates a deviation from ergodicity, reflecting heterogeneity in the transport dynamics among different tracers. This metric was used to quantitatively compare the non-ergodic properties of the point-vortex system with those of the L\'evy walk null model.
+
+\section{Results}
+\label{sec:results}
+We present the results of our analysis, beginning with an assessment of measurement noise and its mitigation. We then investigate the mechanistic drivers of transport, including tracer trapping and velocity memory, before characterizing the overall transport regimes through mean squared displacement scaling and ergodicity metrics.
+
+\subsection{Noise sensitivity and data filtering}
+
+To ensure the robustness of our findings against measurement uncertainty, we first quantified the impact of the simulated 0.02 m Gaussian noise on the velocity statistics. The analysis of single-step displacement increments revealed a strong, configuration-dependent sensitivity. For sparse vortex configurations ($N=5$ and $N=10$), where the characteristic physical displacements are small, the added noise significantly contaminated the tails of the increment distribution, artificially inflating estimates of the tail index. In contrast, for denser configurations ($N=20$ and $N=40$), the signal-to-noise ratio is much higher, and the noise has a progressively smaller effect on the tail statistics.
+
+Based on these findings, we implemented a targeted data processing strategy. For the dense configurations ($N=20$ and $N=40$), a Savitzky-Golay filter was applied to the noisy position data. A sensitivity analysis showed that a filter window of 7 time steps provided an optimal balance, effectively suppressing high-frequency noise without distorting the underlying heavy-tailed dynamics. For the sparse configurations ($N=5$ and $N=10$), the signal-to-noise ratio was too low for effective filtering. Therefore, all subsequent mechanistic analyses for these two cases were performed exclusively on the noise-free (`true`) data to avoid confounding artifacts. This approach ensures that our conclusions are based on the physical dynamics of the system rather than measurement noise.
+
+\subsection{Tracer trapping and residence time statistics}
+
+To investigate the role of trapping in shaping transport, we analyzed the distribution of residence times, $P(\tau_{res})$. A tracer was considered "trapped" during time intervals when its speed fell below the 25th percentile of the speed distribution for its respective $N$ configuration. The tail of the residence time distribution was modeled as a power law, $P(\tau_{res}) \sim \tau_{res}^{-\gamma}$, with the exponent $\gamma$ estimated using maximum likelihood.
+
+Our results show a clear trend in trapping behavior with increasing vortex density. For the sparse system $N=10$, the distribution exhibits a power-law tail with an exponent $\gamma \approx 2.1 \pm 0.3$. As the density increases, the tail becomes heavier, with $\gamma \approx 1.8 \pm 0.2$ for $N=20$ and $\gamma \approx 1.6 \pm 0.2$ for $N=40$. This indicates that while tracers in sparser systems can be trapped, the probability of extremely long trapping events increases significantly in the more chaotic, denser systems. For the nearly integrable $N=5$ case, tracers can become quasi-permanently bound to stable vortex structures, leading to a distribution dominated by a few extremely long events for which a power-law fit is ill-defined.
+
+Comparison with a power-law model with an exponential cutoff confirmed that for the densest configurations ($N=20$ and $N=40$), a pure power-law provides a sufficient description of the data within the simulation's time window. This suggests that the heavy-tailed trapping statistics are a genuine feature of the chaotic dynamics in these systems. Physically, this corresponds to a transition from long-term trapping in stable regions at low $N$ to a regime of frequent, intermittent capture and release by transient vortex structures at high $N$.
+
+\subsection{Velocity correlations and Hamiltonian memory}
+
+We examined the velocity autocorrelation function (VACF) to directly probe the system's memory, comparing the point-vortex dynamics to the memoryless L\'evy walk null model. The VACF for the point-vortex system reveals the presence of significant Hamiltonian memory. For all vortex densities, the VACF exhibits a rapid initial decay followed by a persistent, positive correlation tail that extends for a significant duration before crossing zero at approximately 0.5 s. The rate of this decay is fastest for the most chaotic system ($N=40$) and slowest for the most regular one ($N=5$), reflecting the rate of velocity decorrelation in the flow.
+
+This behavior stands in stark contrast to the L\'evy walk model. By construction, the L\'evy walk is a memoryless process, and its VACF decays to zero within 2-3 time steps and remains there. This fundamental difference highlights a key physical feature that distinguishes the deterministic Hamiltonian flow from its stochastic approximation: the point-vortex system retains a memory of its velocity over time, a direct consequence of the conservative dynamics.
+
+These findings were corroborated by computing the mutual information between velocities at different time lags, which captures both linear and non-linear correlations. The mutual information for the point-vortex system also showed a slow decay, remaining significantly above the noise floor for much longer than in the L\'evy walk model. This confirms that the point-vortex system possesses non-Markovian velocity statistics that are entirely absent in the stochastic null model.
+
+\subsection{Non-stationarity and ergodicity breaking}
+
+To assess the temporal homogeneity and ergodicity of the transport process, we analyzed the time-averaged MSD (TAMSD) for individual trajectories. A sliding-window analysis of the local anomalous exponent, $\alpha(t)$, reveals that the transport is non-stationary for all configurations. For $N=5$, $\alpha(t)$ fluctuates around 2.0, consistent with persistent near-ballistic motion. For $N=20$ and $N=40$, $\alpha(t)$ is highly variable and shows a tendency to decrease over time, suggesting a crossover from an initial ballistic phase to a subsequent superdiffusive one as tracers explore the complex vortex field.
+
+We quantified the degree of ergodicity breaking using the parameter $EB(\Delta)$, which measures the ensemble variance of the TAMSD. For the point-vortex system, the $EB$ parameter increases monotonically with vortex density, from $EB \approx 0.08$ for $N=5$ to $EB \approx 0.45$ for $N=40$. This indicates that as the system becomes more chaotic, the transport dynamics become more heterogeneous across the ensemble of tracers, leading to a greater departure from ergodicity.
+
+Comparing these results to the L\'evy walk model provides a quantitative benchmark. The ergodicity breaking in the point-vortex system is of a similar magnitude to that of the L\'evy walks. For instance, the $N=40$ system ($EB \approx 0.45$) exhibits ergodicity breaking comparable to a L\'evy walk with a tail exponent of $\beta=1.5$ ($EB \approx 0.48$). This suggests that while the underlying memory mechanisms differ, the degree of transport heterogeneity in the dense chaotic flow is consistent with that produced by a moderately superdiffusive, memoryless stochastic process.
+
+\subsection{Mean squared displacement and transport regimes}
+
+The primary characterization of transport was performed by analyzing the ensemble-averaged mean squared displacement (EAMSD). Fitting a power law, $\langle \mathbf{r}^2(\Delta t) \rangle \sim (\Delta t)^\alpha$, to the EAMSD curves reveals a striking non-monotonic relationship between the anomalous diffusion exponent $\alpha$ and the vortex density $N$.
+
+For sparse to intermediate densities, the transport is near-ballistic. We find $\alpha = 2.008 \pm 0.000$ for $N=5$, $\alpha = 2.032 \pm 0.001$ for $N=10$, and $\alpha = 2.100 \pm 0.001$ for $N=20$. The values of $\alpha \approx 2$ indicate that tracers are advected coherently over long distances by the large-scale velocity field, with little diffusive spreading.
+
+However, a distinct transition occurs in the densest configuration. For $N=40$, the exponent drops significantly to $\alpha = 1.680 \pm 0.014$, signaling a clear shift from near-ballistic motion to a superdiffusive regime. This non-monotonic behavior provides a key insight into the system's dynamics. At low to intermediate $N$, the flow structure is dominated by coherent vortices that lead to prolonged, straight-line flights. At high $N$, the increased vortex-vortex interactions create a more complex and rapidly evolving chaotic sea. This environment enhances tracer trapping and accelerates velocity decorrelation, as seen in the residence time and VACF analyses. The combination of these effects disrupts the long ballistic flights, resulting in a transport process that is still superdiffusive ($\alpha > 1$) but significantly less efficient than ballistic motion ($\alpha < 2$).
+
+\section{Conclusions}
+\label{sec:conclusions}
+In this paper, we investigated the connection between deterministic Hamiltonian dynamics and emergent anomalous transport statistics. We addressed the question of when and why the complex transport of passive tracers in a chaotic flow deviates from the predictions of a simple, memoryless stochastic model. To this end, we performed numerical simulations of tracer advection in a two-dimensional point-vortex system, a canonical model for Hamiltonian chaos, and systematically compared its transport properties against a L\'evy walk null model.
+
+Our methodology involved simulating tracer trajectories across a range of vortex densities ($N \in \{5, 10, 20, 40\}$) and analyzing the resulting statistics, including the mean squared displacement (MSD), velocity autocorrelation function (VACF), and residence time distributions. A key aspect of our analysis was the rigorous treatment of measurement noise, which allowed us to distinguish genuine physical dynamics from statistical artifacts, particularly in sparse vortex configurations.
+
+Our results reveal a non-monotonic relationship between vortex density and the nature of the transport. For sparse to intermediate densities ($N \le 20$), the system exhibits near-ballistic motion, with an anomalous diffusion exponent $\alpha \approx 2$. In this regime, tracers are advected coherently by the large-scale flow structures. However, a distinct transition occurs in the densest configuration ($N=40$), where the transport becomes markedly superdiffusive, with $\alpha \approx 1.68$. This transition is driven by a change in the underlying dynamics. Mechanistic analysis demonstrated that the point-vortex system possesses significant Hamiltonian memory, evidenced by persistent velocity correlations that are, by construction, absent in the memoryless L\'evy walk model. Furthermore, we found that increasing vortex density leads to heavier-tailed residence time distributions, indicating that tracers in more chaotic environments are subject to more frequent and prolonged trapping events.
+
+From these findings, we have learned that vortex density acts as a critical control parameter that governs a transition between distinct anomalous transport regimes. The shift from near-ballistic to superdiffusive motion at high density is not a simple loss of transport efficiency but is mechanistically linked to the interplay between trapping and flight dynamics. The increased chaotic interactions in the dense system disrupt long, coherent flights and enhance tracer trapping, a memory-dependent process. This work establishes that while a simple stochastic model like a L\'evy walk may replicate certain macroscopic features, such as the scaling of the MSD, it fails to capture the essential role of deterministic memory in shaping the transport dynamics of Hamiltonian systems. Our findings underscore the importance of considering these memory effects for a complete physical description of transport in chaotic flows.
+
+
+\bibliography{bibliography}{}
+\bibliographystyle{unsrt}
+
+\end{document}

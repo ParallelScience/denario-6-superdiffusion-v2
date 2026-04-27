@@ -1,0 +1,25 @@
+LaTeX Compilation Errors Found:
+
+! Undefined control sequence.
+<argument> (\mathbb
+{E}[\overline {\delta ^2(\Delta )}])^2
+l.45 ...mathbb{E}[\overline{\delta^2(\Delta)}])^2}
+,
+? ! Undefined control sequence.
+<recently read> \mathbb
+
+l.47 ...lta$, and $\text{Var}[\cdot]$ and $\mathbb
+{E}[\cdot]$ denote the var...
+
+?
+
+! Emergency stop.
+<recently read> \mathbb
+
+l.47 ...lta$, and $\text{Var}[\cdot]$ and $\mathbb
+{E}[\cdot]$ denote the var...
+
+Output written on Methods.pdf (1 page).
+Transcript written on Methods.log.
+---- STDERR ----
+

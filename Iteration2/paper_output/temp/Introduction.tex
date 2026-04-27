@@ -1,0 +1,20 @@
+\documentclass[]{article}
+
+\usepackage{amsmath}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{graphicx} 
+
+
+\begin{document}
+
+The connection between microscopic, deterministic laws and emergent, macroscopic statistical behavior is a foundational challenge in statistical physics. In numerous complex systems, from turbulent fluids to financial markets, this link is expressed through anomalous transport, where a particle's mean squared displacement grows non-linearly with time as $\langle x^2(t) \rangle \sim t^\alpha$, with an exponent $\alpha \neq 1$. Understanding the physical mechanisms driving such behavior, particularly superdiffusion ($\alpha > 1$), remains an active area of research. The challenge is especially pronounced in systems governed by Hamiltonian dynamics, where the absence of dissipation preserves long-range correlations and memory effects that can fundamentally alter transport properties.
+
+Chaotic advection in two-dimensional fluid flows serves as a canonical paradigm for exploring these phenomena. The idealized model of point vortices, which describes the motion of passive tracers in a field of interacting vortices, provides a tractable yet physically rich Hamiltonian framework. The long-range velocity fields induced by the vortices create a complex and dynamic environment. Tracers can become trapped for extended periods in quasi-regular regions around vortex cores or be ejected into chaotic regions, undertaking long, nearly ballistic flights. This intricate interplay between trapping and flight events is known to generate heavy-tailed velocity distributions and, consequently, superdiffusive transport statistics.
+
+A common strategy for modeling such complex transport is to replace the underlying deterministic dynamics with a simpler stochastic process, such as a Lévy walk. These models, built upon random, independent steps drawn from a heavy-tailed probability distribution, can successfully reproduce the superdiffusive scaling observed in many physical systems. However, this simplification comes at a significant cost: by construction, memoryless stochastic models neglect the persistent correlations and deterministic structure inherent to Hamiltonian systems. This raises a critical question: under what conditions can the transport in a deterministic chaotic flow be faithfully represented by a simple stochastic process, and what are the key physical mechanisms that cause this description to break down?
+
+In this paper, we address this question by systematically investigating passive tracer transport in a two-dimensional point-vortex system. We perform numerical simulations across a range of vortex densities, a key physical parameter that controls the system's chaoticity. To isolate the role of deterministic memory, we directly compare the transport statistics of the vortex system against those of a canonical memoryless Lévy walk, which serves as a null model. Our analysis extends beyond the mean squared displacement to include mechanistic diagnostics such as velocity autocorrelation functions and residence time distributions, allowing us to probe the underlying dynamics. By rigorously accounting for the effects of finite-time trajectories and measurement noise, we distinguish genuine physical phenomena from statistical artifacts. Our findings reveal a non-monotonic relationship between vortex density and transport, where sparse systems exhibit near-ballistic motion while denser configurations transition to a distinct superdiffusive regime. We demonstrate that this transition is governed by deterministic memory effects, such as tracer trapping, which have no analog in the stochastic model. This work clarifies the limits of applying simple stochastic models to complex Hamiltonian flows and highlights the crucial role of deterministic memory in shaping anomalous transport.
+
+\end{document}
+                
