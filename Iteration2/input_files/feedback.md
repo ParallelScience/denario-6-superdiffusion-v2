@@ -1,0 +1,17 @@
+The current analysis provides a solid foundation but suffers from a critical conceptual disconnect between the observed MSD scaling and the underlying stochastic theory. You are currently attempting to map a Hamiltonian system (point vortices) onto a Lévy walk null model, yet your results demonstrate that the point-vortex system is fundamentally non-Markovian, whereas the Lévy walk is memoryless.
+
+**1. Address the "Ballistic Trap":**
+Your MSD results for $N=5, 10, 20$ show $\alpha \approx 2$. This is not "Lévy-like superdiffusion"; it is ballistic motion. In Hamiltonian systems, this is a signature of tracers being trapped in the streamlines of coherent vortex structures. You are overclaiming "Lévy-like" behavior for these configurations. The transition to $\alpha \approx 1.68$ at $N=40$ is the only regime where superdiffusion is truly emerging. Future iterations must distinguish between *advective ballistic transport* (vortex-trapping) and *stochastic superdiffusion* (Lévy flights).
+
+**2. Reconcile Memory vs. Markovianity:**
+Your VACF and Mutual Information analyses (Section 3.3) are the most insightful parts of the report. They prove that the point-vortex system has long-lived memory, which is the antithesis of the Lévy walk model. Stop trying to force a "Lévy-equivalence" mapping. Instead, pivot to a **Fractional Langevin Equation (FLE)** framework. An FLE with a power-law kernel can capture both the superdiffusive MSD scaling and the observed velocity memory, providing a much more physically accurate "effective theory" than the memoryless Lévy walk.
+
+**3. Refine the Ergodicity Analysis:**
+The EB parameter analysis is currently comparing apples to oranges. The EB plateau in Lévy walks is driven by the heavy-tailed distribution of flight times, while in your vortex system, it is driven by the spatial heterogeneity of the vortex field (trapping vs. chaotic regions). You should compute the EB parameter *conditioned* on the tracer's proximity to vortex centers. This will reveal if the non-ergodicity is a global property or a local effect of "stickiness" near vortex cores.
+
+**4. Actionable Improvements for the Next Iteration:**
+*   **Drop the Lévy-equivalence mapping:** It is theoretically inconsistent with your VACF findings. Replace it with a comparison to a **Fractional Brownian Motion (fBm)** or **Fractional Langevin Equation** model, which naturally incorporates the memory effects you identified.
+*   **Spatial Decomposition:** Instead of ensemble-averaging all tracers, categorize them by their distance to the nearest vortex. The "ballistic" tracers are likely those trapped in stable orbits. Separating these will clarify why $\alpha$ drops at $N=40$ (the fraction of "trapped" tracers likely decreases as the field becomes more chaotic).
+*   **Stop the Savitzky-Golay over-optimization:** You have already established that noise is negligible for $N=20, 40$. Do not perform further filtering sensitivity analyses; it is a distraction from the physics. Focus on the transition from ballistic to superdiffusive regimes as a function of the Lyapunov exponent of the vortex field (which you can estimate from the vortex-vortex interaction time).
+
+**Summary:** The project has successfully identified that the system is not a simple Lévy walk. The next step is to stop treating the Lévy walk as a target and start treating it as a contrastive null model to quantify the *degree of Hamiltonian memory* in the system.
