@@ -1,0 +1,75 @@
+{
+    "sub_tasks": [
+        {
+            "bullet_points": [
+                "Load both datasets (point_vortex_tracers.npy and levy_walk_trajectories.npy)",
+                "Apply Savitzky-Golay filter to x_noisy/y_noisy fields for each tracer/trajectory separately; validate against x_true/y_true by computing RMSE before and after filtering for each configuration",
+                "Compute Time-Averaged MSD (TAMSD) for each individual tracer (point-vortex) and trajectory (Lévy walk) across all lag times using the true positions",
+                "Fit power-law slopes (anomalous exponent α) to each TAMSD curve using log-log linear regression restricted to lag times between 10% and 60% of total trajectory duration; report R² for each fit as a quality indicator",
+                "Compute ensemble-averaged MSD and TAMSD per configuration (N ∈ {5,10,20,40} for point-vortex; β ∈ {1.2,1.5,1.8,2.5} for Lévy walk)",
+                "Compute single-step displacement increments Δx, Δy for both datasets per configuration",
+                "Apply the Hill estimator to the absolute displacement increments using the top 10–15% of the empirical tail to extract tail exponent μ per configuration; report the mean absolute error of the log-log tail fit as a goodness-of-fit metric",
+                "Compute the ergodicity-breaking parameter EB(Δt) = Var(TAMSD)/Mean(TAMSD)² as a function of lag time for all configurations",
+                "Save all computed results (TAMSD arrays, α values with R², μ values with MAE, EB arrays, filtered positions, displacement increments) to disk as numpy/npz files"
+            ],
+            "sub_task": "Data Preparation, Noise Mitigation, and Core Statistical Computations",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Load the displacement increments and trajectory data saved in Step 1",
+                "For each configuration (N values and β values), compute the empirical characteristic function φ(k, Δt) = ⟨exp(ik·Δx)⟩ averaged over all tracers/trajectories, for a range of lag times Δt and wavenumbers k",
+                "Restrict the characteristic function fitting to the low-k regime where |φ(k, Δt)| > 0.1 (noise floor threshold), since the fractional diffusion model φ(k, Δt) = exp(-D_α |k|^α Δt) is only valid in the small-k limit",
+                "Extract α(Δt) and D_α(Δt) from the fits at each lag time for all configurations",
+                "Identify the crossover time τ_c for each point-vortex configuration as the lag time where α(Δt) stabilizes (derivative falls below 5% of initial value) or enters the 95% CI of the corresponding Lévy walk α",
+                "Perform at least 200 bootstrap resamples of the tracer ensemble (sampling with replacement), recomputing the full α(Δt) profile for each resample; report the 2.5th and 97.5th percentiles as the 95% confidence interval on both α(Δt) and τ_c",
+                "Save all characteristic function fits, α(Δt) profiles, D_α(Δt) profiles, crossover times, and bootstrap confidence intervals to disk"
+            ],
+            "sub_task": "Characteristic Function Fitting and Fractional Diffusion Modeling",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Load all computed results from Steps 1 and 2",
+                "Construct the effective theory mapping: for each point-vortex N configuration, identify the Lévy walk β class whose asymptotic α and tail exponent μ most closely match; quantify the match using Euclidean distance in (α, μ) space",
+                "Perform Kolmogorov-Smirnov tests comparing point-vortex displacement distributions at crossover time τ_c against the matched Lévy walk displacement distributions",
+                "Compute the theoretical prediction for α from vortex density using the corrected formula α_theory = 3 − μ_eff where μ_eff = 2 − δ(N, γ_std), with δ estimated empirically from the Hill estimator results of Step 1; compare against empirical α_emp(N)",
+                "Tabulate all key results: α_emp(N), μ(N), τ_c(N) with bootstrap CI, matched β, KS statistic and p-value, EB plateau values, D_α(N), α_theory(N)",
+                "Save all tabulated results and mapping data to disk"
+            ],
+            "sub_task": "Effective Theory Mapping and KS Statistical Validation",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Load all saved results from Steps 1–3",
+                "Figure 1: Multi-panel plot showing ensemble-averaged TAMSD vs lag time for all point-vortex N configurations (left panel) and all Lévy walk β classes (right panel) on log-log axes, with fitted power-law slopes and R² values annotated",
+                "Figure 2: Multi-panel plot of displacement increment PDFs (Δx) for point-vortex (all N) and Lévy walk (all β) on log-log axes with fitted Lévy-stable tails and tail exponent μ annotated; include linear-scale inset panels showing the central Gaussian-like core for each configuration",
+                "Figure 3: Two-panel figure — top panel shows α(Δt) profiles from characteristic function fitting for all point-vortex N configurations with crossover time τ_c marked and bootstrap 95% confidence bands, plus horizontal reference lines for Lévy walk theoretical α values; bottom panel shows D_α(Δt) profiles for all point-vortex N configurations",
+                "Figure 4: Effective theory mapping scatter plot of empirical (α_emp, μ) for point-vortex configurations vs Lévy walk classes, with connecting lines showing the best-match mapping and the theoretical prediction curve α_theory(N) = 3 − μ_eff(N) overlaid",
+                "Figure 5: Ergodicity-breaking parameter EB(Δt) vs lag time for all configurations (point-vortex and Lévy walk) on log-log axes",
+                "Save all figures at high resolution (dpi≥300)"
+            ],
+            "sub_task": "Generate All Figures",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Synthesize all quantitative results from Steps 1–4 into a comprehensive Results section of a scientific paper",
+                "Report noise mitigation validation results (RMSE before/after Savitzky-Golay filtering for each configuration)",
+                "Report TAMSD power-law fits: α_emp for each N (point-vortex) and each β (Lévy walk) with R² values and uncertainties; discuss whether α increases monotonically with N",
+                "Report displacement increment PDF tail exponents μ with MAE goodness-of-fit metrics for all configurations; compare point-vortex tails to Lévy walk tails",
+                "Report characteristic function fitting results: α(Δt) profiles, crossover times τ_c(N) with bootstrap 95% CI, D_α(N) values and their stabilization behavior",
+                "Report the effective theory mapping: which Lévy walk β class best matches each point-vortex N configuration, with KS test statistics and p-values",
+                "Report theoretical prediction α_theory(N) = 3 − μ_eff(N) and compare to empirical values, discussing the role of finite-N corrections δ(N, γ_std)",
+                "Report ergodicity-breaking parameter EB profiles and discuss implications for ergodicity in point-vortex systems vs Lévy walks",
+                "Explicitly compare crossover times τ_c(N) against the vortex interaction timescale τ_KO ~ L²/Γ_rms from the Kirchhoff-Onsager Hamiltonian, providing physical interpretation of the crossover",
+                "Include a dedicated subsection on limitations: finite ensemble size (5 tracers per configuration), finite simulation time relative to τ_c, and sensitivity of KS p-values to lag time choice",
+                "Reference all figures by number and describe key visual features",
+                "Provide physical interpretation of all results in the context of the Kirchhoff-Onsager Hamiltonian and anomalous transport theory"
+            ],
+            "sub_task": "Write Full Results Section",
+            "sub_task_agent": "researcher"
+        }
+    ]
+}
