@@ -1,0 +1,42 @@
+{
+  "image0": {
+    "key": "image0",
+    "name": "step_2_fig2_msd_scaling_1777306297.png",
+    "caption": "Ensemble-averaged Mean Squared Displacement (MSD) versus lag time on log-log axes for point-vortex tracers (left) and L\u00e9vy walks (right). For the point-vortex system, the anomalous diffusion exponent $\\alpha$, given by the slope, increases monotonically with the number of vortices N, demonstrating a transition from near-normal diffusion ($\\alpha \\approx 1$) for N=5 to strong superdiffusion for N=40. The L\u00e9vy walk MSDs (right) recover the theoretical scaling $\\alpha = 3 - \\beta$ and serve as a benchmark, with the N=40 vortex configuration exhibiting a scaling exponent comparable to the $\\beta=1.5$ L\u00e9vy walk."
+  },
+  "image5": {
+    "key": "image5",
+    "name": "fig5_displacement_pdfs.png",
+    "caption": "Marginal displacement probability density functions (PDFs), P($\\Delta$x), for the N=40 point-vortex configuration (left) and the $\\beta$=1.5 L\u00e9vy walk class (right) at four increasing lag times ($\\Delta$t). For both systems, the distributions are approximately Gaussian at the shortest lag time but develop progressively heavier, non-Gaussian tails as $\\Delta$t increases, shown relative to a Gaussian reference (dashed line). At the largest lag times, both the vortex and L\u00e9vy walk PDFs exhibit heavy tails characteristic of a L\u00e9vy-stable distribution, providing strong evidence for the effective equivalence of the two systems in terms of their displacement statistics. The L\u00e9vy walk PDFs develop heavy tails more rapidly with increasing lag time compared to the vortex tracer PDFs."
+  },
+  "image1": {
+    "key": "image1",
+    "name": "fig1_trajectories.png",
+    "caption": "Representative 2D trajectories for passive tracers in point-vortex fields (top row) and for synthetic L\u00e9vy walks (bottom row). The spatial complexity of the vortex-driven trajectories increases with the number of vortices, N, transitioning from a compact path at N=5 to a space-filling trajectory with long, curved excursions at N=40. This progression illustrates a shift towards superdiffusion, where the N=40 trajectory is morphologically similar to the superdiffusive L\u00e9vy walk with $\\beta$ = 1.5, while the N=5 trajectory resembles the compact, normal-diffusive case ($\\beta$ = 2.5). Trajectories are colored by normalized time from early (blue) to late (yellow)."
+  },
+  "image6": {
+    "key": "image6",
+    "name": "fig6_ergodicity.png",
+    "caption": "The ergodicity-breaking parameter, EB($\\Delta$t), as a function of lag time for point-vortex tracers (left) and L\u00e9vy walks (right). The point-vortex system becomes more ergodic (EB decreases) as the number of vortices N increases and the dynamics become more chaotic. In contrast, the L\u00e9vy walk system becomes less ergodic (EB increases) as superdiffusion becomes stronger ($\\beta$ decreases), highlighting a key mechanistic difference between the two models despite potentially similar mean squared displacement scaling."
+  },
+  "image2": {
+    "key": "image2",
+    "name": "fig2_msd_scaling.png",
+    "caption": "Ensemble-averaged Mean Squared Displacement (MSD) as a function of lag time on log-log axes for point-vortex systems (left) and L\u00e9vy walks (right). For the point-vortex model, the anomalous diffusion exponent $\\alpha$, given by the slope, increases monotonically with the number of vortices N, demonstrating a transition from near-normal diffusion for N=5 to strong superdiffusion for N=40. The L\u00e9vy walk models serve as a ground truth, with their empirical MSD scaling showing excellent agreement with the theoretical prediction $\\alpha = 3 - \\beta$, which validates the analysis methodology."
+  },
+  "image7": {
+    "key": "image7",
+    "name": "fig7_regime_map.png",
+    "caption": "Regime map of the anomalous exponent \u03b1 versus the ergodicity-breaking parameter EB for point-vortex systems (blue circles) and L\u00e9vy walks (orange squares). The plot illustrates the divergent relationship between superdiffusion and ergodicity breaking in the two models. L\u00e9vy walks exhibit a positive correlation, where stronger superdiffusion (higher \u03b1) corresponds to stronger ergodicity breaking (higher EB). The point-vortex systems occupy a distinct region of the parameter space and do not follow this trend, highlighting a fundamental mechanistic difference between transport driven by chaotic advection and a stochastic walk model."
+  },
+  "image3": {
+    "key": "image3",
+    "name": "fig3_vacf.png",
+    "caption": "Normalized velocity autocorrelation functions (VACF), C\\_v(\u0394t), for point-vortex tracers (left) and L\u00e9vy walks (right) versus lag time. For the point-vortex system, the velocity decorrelates more rapidly as the number of vortices N increases, evidenced by the faster decay of the VACF. The N=40 configuration exhibits a negative lobe, a signature of velocity anti-correlations arising from Hamiltonian memory. In contrast, the superdiffusive L\u00e9vy walks (e.g., \u03b2=1.2, 1.5) show a slow, persistent positive correlation, reflecting the long-duration ballistic flights that characterize their motion. The comparison highlights the distinct mechanistic origins of superdiffusion: rapid decorrelation from chaotic interactions in the vortex system versus sustained ballistic motion in the L\u00e9vy walk model."
+  },
+  "image4": {
+    "key": "image4",
+    "name": "fig4_residence_times.png",
+    "caption": "Log-log plot of the residence time distributions, P($\\tau$\\_res), for tracers in point-vortex fields with N = 10, 20, and 40. Residence times are identified as periods where the instantaneous tracer speed falls below the 25th percentile. The distributions exhibit power-law tails, P($\\tau$\\_res) $\\sim$ $\\tau^{-\\gamma}$, with the tail exponent $\\gamma$ decreasing as the number of vortices N increases. For the N = 40 configuration, the exponent $\\gamma \\approx 1.7$ is less than 2, indicating a divergent mean residence time and providing direct evidence for L\u00e9vy-like trapping. In contrast, the N = 10 distribution shows an exponential cutoff, consistent with its near-normal diffusion."
+  }
+}

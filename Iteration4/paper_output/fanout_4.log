@@ -1,0 +1,137 @@
+
+###### PROMPT BEGINS ########
+System: You are a scientist
+Human: You are provided with:
+- a report on the results of a project. 
+- a plot from the analysis of the project.
+Your task is to create a caption for the plot that will be placed in the results section of a scientific paper. 
+
+Follow these instructions:
+- Write the caption in LaTeX
+- Describe what the plot is showing and relate it to the context below
+- Use the context below to relate the content of the caption to the results section
+- Do not refer to any section or subsection in the text
+- Try to describe what we learn from the image
+- Write the caption to be as short as possible while keeping its content
+- Do not make up anything. The caption should be a description of the plot based on the context below.
+- The caption must be a single paragraph.
+- When writing the caption, take into account that the underscore symbol needs to be written as \_, otherwise it wont compile in LaTeX.
+- Caption must not include tables.
+- If using percentage symbols, use \% instead of %
+
+Context:
+# Results
+
+## 1. Tracer Trajectory Morphology
+
+Visual inspection of representative 2D tracer trajectories (Fig. <code>fig1_trajectories.png</code>) reveals a systematic and striking progression in spatial complexity as the number of point vortices N increases from 5 to 40. For the N = 5 configuration, the tracer path is compact and quasi-periodic, confined to a relatively small region of the domain. The trajectory exhibits smooth, looping structures that reflect the near-integrable character of the underlying Kirchhoff-Onsager Hamiltonian at low vortex number: with only five vortices, the phase space is low-dimensional and the dynamics remain weakly chaotic, with the tracer effectively trapped in the neighbourhood of a few dominant vortex cores. The spatial extent of the N = 5 trajectory is substantially smaller than the initial vortex placement domain of [−10, 10]², indicating that the tracer does not explore the full available phase space within the observation window of 24.75 s.
+
+As N increases to 10 and 20, the trajectories become progressively more space-filling. The N = 10 tracer exhibits occasional excursions away from its initial position, interspersed with periods of local confinement, producing a trajectory that is visually intermediate between the compact N = 5 case and the strongly diffusive N = 40 case. The N = 20 configuration marks the onset of Lévy-like behaviour: the trajectory shows clear evidence of intermittent long-range excursions punctuated by periods of trapping near vortex clusters, a morphological signature consistent with the theoretical prediction that the 1/r vortex kernel induces heavy-tailed velocity statistics at intermediate vortex densities.
+
+The N = 40 tracer trajectory is qualitatively distinct from all lower-N cases. It is strongly space-filling, covering a large fraction of the simulation domain, with numerous long straight-line segments (ballistic flights) separated by tortuous, locally confined segments. This morphology is visually reminiscent of the Lévy walk trajectories shown in the bottom row of Fig. <code>fig1_trajectories.png</code>, particularly the β = 1.2 and β = 1.5 classes. However, a key morphological distinction is apparent: the Lévy walk trajectories exhibit geometrically straight flights of well-defined duration, reflecting the underlying Pareto-distributed flight-time model, whereas the point-vortex tracer paths are curved even during their most extended excursions, because the tracer is continuously deflected by the evolving vortex velocity field. The β = 2.5 Lévy walk trajectory, by contrast, is compact and tortuous, closely resembling the N = 5 vortex tracer in spatial extent, consistent with its effectively normal diffusive scaling (α_theory = 1.0). The time-coloring of trajectories (viridis colormap, blue = early, yellow = late) confirms that the N = 40 and β = 1.2 trajectories achieve their large spatial extents progressively throughout the observation window rather than through a single early excursion, indicating sustained anomalous transport rather than a transient artifact.
+
+---
+
+## 2. MSD Scaling Analysis
+
+The ensemble-averaged mean squared displacement (MSD) curves for all four vortex configurations and all four Lévy walk classes are shown on log-log axes in Fig. <code>fig2_msd_scaling_1777306297.png</code>. Power-law fits of the form MSD(t) ~ t^α were performed over lag times spanning 10% to 60% of the maximum available lag, a range chosen to avoid the short-time ballistic regime and the long-time regime where finite trajectory length introduces statistical bias.
+
+For the point-vortex configurations, the empirical anomalous exponents are:
+
+| N | α_emp | R² |
+|---|-------|----|
+| 5 | ~1.05 | ~0.97 |
+| 10 | ~1.18 | ~0.98 |
+| 20 | ~1.35 | ~0.97 |
+| 40 | ~1.52 | ~0.96 |
+
+These values demonstrate a clear and monotonic increase of α_emp with N, confirming the central hypothesis that denser vortex fields produce stronger superdiffusion. The N = 5 configuration is consistent with near-normal diffusion (α ≈ 1), reflecting the weakly chaotic dynamics of the low-vortex-number system. The N = 40 configuration achieves α_emp ≈ 1.52, placing it firmly in the superdiffusive regime and approaching the moderate superdiffusion class of the Lévy walk ground truth (β = 1.5, α_theory = 1.5).
+
+At short lag times (Δt ≲ 0.5 s, corresponding to approximately 10 time steps), all vortex configurations exhibit a steeper-than-linear MSD slope approaching α ≈ 2, indicative of a short-time ballistic regime in which the tracer moves coherently under the instantaneous vortex velocity field before the vortex configuration has evolved significantly. This ballistic-to-superdiffusive crossover is most pronounced for N = 40, where the transition occurs at a lag time of approximately 1–2 s, consistent with the characteristic vortex interaction timescale τ_int ~ 2π/Γ_rms ≈ 6 s for the given circulation distribution (γ_std = 1.0). For N = 5, the crossover is less sharp and the MSD remains close to linear throughout the fitting range, suggesting that the vortex interaction timescale is comparable to or longer than the observation window.
+
+The Lévy walk MSD curves (right panel of Fig. <code>fig2_msd_scaling_1777306297.png</code>) recover the theoretical scaling α = 3 − β with high fidelity. The β = 1.2 class achieves α_emp ≈ 1.79 (theory: 1.8), β = 1.5 gives α_emp ≈ 1.49 (theory: 1.5), β = 1.8 gives α_emp ≈ 1.21 (theory: 1.2), and β = 2.5 gives α_emp ≈ 1.01 (theory: 1.0). The excellent agreement between empirical and theoretical exponents validates the MSD fitting methodology and confirms that the Lévy walk dataset provides a reliable ground truth for comparison with the point-vortex results.
+
+---
+
+## 3. Velocity Autocorrelation Functions and Hamiltonian Memory
+
+The normalized velocity autocorrelation functions (VACFs), C_v(Δt) = ⟨v(t)·v(t+Δt)⟩/⟨v²⟩, computed from finite differences of the noise-free tracer positions, are shown in Fig. <code>fig3_vacf.png</code>. The VACF encodes the temporal memory of the velocity field experienced by the tracer and provides a mechanistic complement to the MSD scaling analysis.
+
+For all four vortex configurations, the VACF decays from unity at zero lag and crosses zero at a configuration-dependent lag time τ_0. The zero-crossing times are approximately:
+
+| N | τ_0 (s) |
+|---|---------|
+| 5 | ~3.5 |
+| 10 | ~2.1 |
+| 20 | ~1.4 |
+| 40 | ~0.9 |
+
+The monotonic decrease of τ_0 with N reflects the increasing rate of decorrelation as the vortex field becomes more chaotic. For N = 5, the VACF remains positive for approximately 3.5 s before crossing zero, indicating that the tracer velocity is positively correlated over timescales comparable to the vortex orbital period. For N = 40, the VACF crosses zero at approximately 0.9 s, after which it exhibits a shallow negative lobe before recovering toward zero. This negative lobe is a signature of velocity anti-correlations arising from the tracer being deflected back toward its previous position by the circulating vortex velocity field — a Hamiltonian memory effect with no counterpart in the Lévy walk model.
+
+The Lévy walk VACFs (right panel of Fig. <code>fig3_vacf.png</code>) exhibit a qualitatively different structure. For β = 1.2 and β = 1.5, the VACF decays slowly and remains positive over long lag times, reflecting the long-duration ballistic flights that dominate the dynamics. The zero-crossing times for the Lévy walks are substantially longer than for the vortex tracers at comparable α values: the β = 1.5 Lévy walk (α_theory = 1.5) has τ_0 ≈ 8–12 s, compared to τ_0 ≈ 0.9 s for the N = 40 vortex tracer (α_emp ≈ 1.52). This discrepancy highlights a fundamental mechanistic difference: superdiffusion in the Lévy walk arises from persistent ballistic flights (positive velocity correlations), whereas superdiffusion in the vortex system arises from intermittent strong kicks from nearby vortices, with the velocity field decorrelating rapidly between kicks. The β = 2.5 Lévy walk VACF decays most rapidly among the Lévy walk classes, consistent with its near-normal diffusive scaling.
+
+---
+
+## 4. Residence Time Distributions and Lévy-Like Trapping
+
+The residence time distributions P(τ_res) for the N = 10, 20, and 40 vortex configurations, computed by identifying periods during which the instantaneous tracer speed falls below the 25th percentile of the pooled speed distribution for each N group, are shown on log-log axes in Fig. <code>fig4_residence_times.png</code>. Power-law tails P(τ_res) ~ τ^{−γ} were fitted to the upper 25% of the residence time distribution using the Hill maximum-likelihood estimator.
+
+The fitted tail exponents are:
+
+| N | γ | Uncertainty (±1σ) |
+|---|---|-------------------|
+| 10 | ~2.8 | ~0.4 |
+| 20 | ~2.2 | ~0.3 |
+| 40 | ~1.7 | ~0.2 |
+
+The systematic decrease of γ with increasing N is a key mechanistic result. A power-law tail exponent γ < 2 implies a divergent mean residence time, which is the hallmark of anomalous trapping in the Lévy walk framework. The N = 40 configuration, with γ ≈ 1.7, satisfies this condition, providing direct mechanistic evidence that the strongly chaotic vortex field induces Lévy-like trapping of the passive tracer. The N = 10 configuration, with γ ≈ 2.8, has a finite mean residence time and is therefore in the normal diffusion regime from the perspective of trapping statistics, consistent with its near-linear MSD scaling (α_emp ≈ 1.18).
+
+For the N = 10 configuration, the residence time distribution exhibits a clear exponential cutoff at τ_res ≈ 4–5 s (marked by a vertical dashed line in Fig. <code>fig4_residence_times.png</code>), indicating that the trapping events are bounded in duration by the characteristic vortex interaction timescale. This cutoff is absent for N = 40, where the power-law tail extends to the longest observable residence times, consistent with the scale-free trapping expected in a strongly chaotic vortex field. The connection between the residence time tail exponent γ and the MSD anomalous exponent α is given by the continuous-time random walk (CTRW) relation α = 2 − (γ − 1) for 1 < γ < 2, which yields α ≈ 1.3 for N = 40 (γ ≈ 1.7), in reasonable agreement with the directly measured α_emp ≈ 1.52, with the discrepancy attributable to the finite observation window and the non-negligible contribution of long ballistic excursions to the MSD.
+
+---
+
+## 5. Evolution of Displacement PDFs
+
+The marginal displacement PDFs P(Δx) at four lag times (Δt = 1, 5, 20, 50 steps, corresponding to 0.05, 0.25, 1.0, and 2.5 s for the vortex tracers and 0.1, 0.5, 2.0, and 5.0 s for the Lévy walks) are shown in Fig. <code>fig5_displacement_pdfs.png</code> for the N = 40 vortex configuration (left panel) and the β = 1.5 Lévy walk class (right panel).
+
+At the shortest lag time (Δt = 1 step), both distributions are approximately Gaussian, reflecting the fact that the single-step displacement is dominated by the instantaneous velocity, which is approximately Gaussian for the vortex tracer (by the central limit theorem applied to the sum of N vortex contributions) and is fixed at v₀ = 1.0 m/s for the Lévy walk. As the lag time increases, both distributions develop progressively heavier tails relative to the Gaussian reference (shown as a dashed curve fitted to the core of the distribution at each lag time).
+
+At the largest lag time (Δt = 50 steps), the N = 40 vortex displacement PDF exhibits clear power-law tails that are well described by a Lévy-stable distribution with stability index α_stable ≈ 1.6 and scale parameter c ≈ 0.8 m (fitted by maximum likelihood to the tails of the distribution, shown as a dotted curve in Fig. <code>fig5_displacement_pdfs.png</code>). The β = 1.5 Lévy walk displacement PDF at the same relative lag time is also well described by a Lévy-stable distribution, with α_stable ≈ 1.5 and scale parameter c ≈ 1.2 m. The close agreement between the stability indices of the two systems (1.6 vs. 1.5) provides strong evidence for the effective Lévy-equivalence of the N = 40 vortex configuration and the β = 1.5 Lévy walk class.
+
+A notable difference between the two panels is the rate of tail development with increasing lag time. The Lévy walk PDFs develop heavy tails more rapidly, with the power-law tail already visible at Δt = 5 steps, whereas the vortex tracer PDFs require approximately Δt = 20 steps before the tails become clearly non-Gaussian. This difference reflects the fact that the Lévy walk generates heavy tails through a single mechanism (long ballistic flights), whereas the vortex tracer requires multiple strong vortex encounters to accumulate a large displacement, introducing a characteristic timescale for tail development.
+
+---
+
+## 6. Ergodicity Breaking
+
+The ergodicity-breaking parameter EB(Δt) = Var(TAMSD(Δt)) / Mean(TAMSD(Δt))², computed from the per-trajectory time-averaged MSDs, is shown as a function of lag time on log-log axes in Fig. <code>fig6_ergodicity.png</code>. The EB parameter quantifies the degree to which individual tracer trajectories deviate from the ensemble average: EB = 0 corresponds to perfect ergodicity, while EB > 0 indicates that different trajectories sample different effective diffusivities.
+
+The EB plateau values (mean over the last 20% of lag times) are:
+
+| Configuration | EB plateau |
+|---------------|------------|
+| N = 5 | ~0.45 |
+| N = 10 | ~0.32 |
+| N = 20 | ~0.21 |
+| N = 40 | ~0.18 |
+| β = 1.2 | ~0.62 |
+| β = 1.5 | ~0.48 |
+| β = 1.8 | ~0.31 |
+| β = 2.5 | ~0.12 |
+
+Several important observations emerge from these results. First, the EB plateau decreases monotonically with increasing N for the vortex configurations, indicating that the system becomes more ergodic as the vortex field becomes more chaotic. This is the opposite trend to that observed in the Lévy walk dataset, where EB increases with decreasing β (stronger superdiffusion). This divergence in the EB-α relationship between the two systems is a key distinguishing feature that is further explored in the regime map (Section 7).
+
+Second, the EB values for the vortex configurations are substantially elevated above zero even for N = 40, indicating significant non-ergodicity. However, it is important to note that with only 5 tracers per vortex configuration, the statistical uncertainty on the EB estimate is large: the standard error on the EB plateau is approximately ±0.08 for all vortex configurations, meaning that the differences between N = 20 and N = 40 are marginally significant. The Lévy walk EB estimates are
+            
+**Respond in exactly this format**
+
+\\begin{Caption}
+<Caption>
+\\end{Caption}
+
+In <Caption> place the figure caption.
+
+###### PROMPT ENDS ########
+
+###### RESPONSE [model: gemini-2.5-pro] ########
+content='\\begin{Caption}\nLog-log plot of the residence time distributions, P($\\tau$\\_res), for tracers in point-vortex fields with N = 10, 20, and 40. Residence times are identified as periods where the instantaneous tracer speed falls below the 25th percentile. The distributions exhibit power-law tails, P($\\tau$\\_res) $\\sim$ $\\tau^{-\\gamma}$, with the tail exponent $\\gamma$ decreasing as the number of vortices N increases. For the N = 40 configuration, the exponent $\\gamma \\approx 1.7$ is less than 2, indicating a divergent mean residence time and providing direct evidence for Lévy-like trapping. In contrast, the N = 10 distribution shows an exponential cutoff, consistent with its near-normal diffusion.\n\\end{Caption}' additional_kwargs={} response_metadata={'finish_reason': 'STOP', 'model_name': 'gemini-2.5-pro', 'safety_ratings': [], 'model_provider': 'google_genai'} id='lc_run--019dcfb9-c3a1-7dc1-8428-b9ba15764874-0' tool_calls=[] invalid_tool_calls=[] usage_metadata={'input_tokens': 4043, 'output_tokens': 1348, 'total_tokens': 5391, 'input_token_details': {'cache_read': 0}, 'output_token_details': {'reasoning': 1169}}

@@ -1,0 +1,239 @@
+---- STDOUT ----
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022/Debian) (preloaded format=xelatex)
+ restricted \write18 enabled.
+entering extended mode
+(./Results.tex
+LaTeX2e <2022-11-01> patch level 1
+L3 programming layer <2023-01-16>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/xetex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-xetex.def)
+No file Results.aux.
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd)
+
+LaTeX Warning: Reference `fig:trajectories' on page 1 undefined on input line 1
+5.
+
+
+LaTeX Warning: Reference `fig:trajectories' on page 1 undefined on input line 1
+9.
+
+
+LaTeX Warning: Reference `fig:msd' on page 1 undefined on input line 30.
+
+
+LaTeX Warning: Reference `tab:msd_exponents' on page 1 undefined on input line 
+32.
+
+! Undefined control sequence.
+l.32 ...rt. At short lag times ($\Delta t \lesssim
+                                                   1$ s), all vortex systems...
+
+? [1]
+
+LaTeX Warning: Reference `fig:vacf' on page 2 undefined on input line 62.
+
+[2]
+Missing character: There is no β (U+03B2) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no β (U+03B2) in font [lmroman10-regular]:mapping=t
+ex-text;!
+
+LaTeX Warning: Reference `fig:residence_times' on page 3 undefined on input lin
+e 75.
+
+
+LaTeX Warning: Reference `tab:residence_exponents' on page 3 undefined on input
+ line 77.
+
+
+Overfull \hbox (14.0546pt too wide) in paragraph at lines 77--78
+[]\TU/lmr/m/n/10 For all vortex configurations, the distributions exhibit power
+-law tails, $\OML/cmm/m/it/10 P\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^\[]\OT1/cmr/
+m/n/10 ) \OMS/cmsy/m/n/10 ^^X
+[3]
+
+LaTeX Warning: Reference `fig:pdfs' on page 4 undefined on input line 104.
+
+[4] [5]
+
+LaTeX Warning: Reference `fig:ergodicity' on page 6 undefined on input line 119
+.
+
+
+LaTeX Warning: Reference `fig:regime_map' on page 6 undefined on input line 132
+.
+
+[6]
+Overfull \hbox (1.07pt too wide) in paragraph at lines 136--137
+[]\TU/lmr/m/n/10 This result demonstrates that despite the remarkable kinematic
+ similarities—
+Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
+ex-text;!
+Missing character: There is no α (U+03B1) in font [lmroman10-regular]:mapping=t
+ex-text;!
+[7] [8] (./Results.aux)
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+ )
+Output written on Results.pdf (8 pages).
+Transcript written on Results.log.
+---- STDERR ----
+---- STDOUT ----
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022/Debian) (preloaded format=xelatex)
+ restricted \write18 enabled.
+entering extended mode
+(./Results_refined.tex
+LaTeX2e <2022-11-01> patch level 1
+L3 programming layer <2023-01-16>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/xetex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-xetex.def)
+No file Results_refined.aux.
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd)
+
+LaTeX Warning: Reference `fig:trajectories' on page 1 undefined on input line 1
+5.
+
+
+LaTeX Warning: Reference `fig:trajectories' on page 1 undefined on input line 1
+9.
+
+
+LaTeX Warning: Reference `fig:msd' on page 1 undefined on input line 30.
+
+
+LaTeX Warning: Reference `tab:msd_exponents' on page 1 undefined on input line 
+32.
+
+! Undefined control sequence.
+l.32 ...rt. At short lag times ($\Delta t \lesssim
+                                                   0.5$ s), all vortex syste...
+
+? 
+LaTeX Warning: File `../input_files/plots/fig2_msd_scaling_1777306297.png' not 
+found on input line 38.
+
+! Unable to load picture or PDF file '../input_files/plots/fig2_msd_scaling_177
+7306297.png'.
+<to be read again> 
+                   }
+l.38 ...les/plots/fig2_msd_scaling_1777306297.png}
+                                                  
+? 
+! Emergency stop.
+<to be read again> 
+                   }
+l.38 ...les/plots/fig2_msd_scaling_1777306297.png}
+                                                  
+No pages of output.
+Transcript written on Results_refined.log.
+---- STDERR ----
+---- STDOUT ----
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022/Debian) (preloaded format=xelatex)
+ restricted \write18 enabled.
+entering extended mode
+(./Results_refined_v1.tex
+LaTeX2e <2022-11-01> patch level 1
+L3 programming layer <2023-01-16>
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2022/07/02 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/natbib/natbib.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/xetex.def)))
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-xetex.def)
+No file Results_refined_v1.aux.
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd)
+
+LaTeX Warning: Reference `fig:trajectories' on page 1 undefined on input line 1
+5.
+
+
+LaTeX Warning: Reference `fig:trajectories' on page 1 undefined on input line 1
+9.
+
+
+LaTeX Warning: Reference `fig:msd' on page 1 undefined on input line 30.
+
+
+LaTeX Warning: Reference `tab:msd_exponents' on page 1 undefined on input line 
+32.
+
+
+LaTeX Warning: File `../input_files/plots/fig2_msd_scaling_1777306297.png' not 
+found on input line 38.
+
+! Unable to load picture or PDF file '../input_files/plots/fig2_msd_scaling_177
+7306297.png'.
+<to be read again> 
+                   }
+l.38 ...les/plots/fig2_msd_scaling_1777306297.png}
+                                                  
+? 
+! Package graphics Error: Division by 0.
+
+See the graphics package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.38 ...les/plots/fig2_msd_scaling_1777306297.png}
+                                                  
+? 
+! Emergency stop.
+ ...                                              
+                                                  
+l.38 ...les/plots/fig2_msd_scaling_1777306297.png}
+                                                  
+No pages of output.
+Transcript written on Results_refined_v1.log.
+---- STDERR ----
