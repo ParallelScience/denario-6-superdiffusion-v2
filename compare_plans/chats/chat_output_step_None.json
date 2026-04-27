@@ -2,7 +2,7 @@
   {
     "name": "plan_comparator",
     "content": "",
-    "timestamp": "2026-04-27 15:38:14",
+    "timestamp": "2026-04-27 16:08:04",
     "cost": {
       "Agent": [
         "plan_comparator"
@@ -11,23 +11,23 @@
         "gemini-3.1-flash-lite-preview"
       ],
       "Cost": [
-        0.001997
+        0.0017710000000000002
       ],
       "Prompt Tokens": [
-        6974
+        6184
       ],
       "Completion Tokens": [
-        169
+        150
       ],
       "Total Tokens": [
-        7143
+        6334
       ]
     }
   },
   {
     "name": "_Group_Tool_Executor",
-    "content": "Plan comparator decision recorded: reuse=False, restart_at_step=1. The new plan introduces a significantly different analytical framework compared to the old plan. While both plans involve data loading and analysis of point-vortex and L\\u00e9vy walk datasets, the new plan shifts the focus towards Okubo-Weiss regime classification, Lyapunov exponent estimation, Bayesian estimation of anomalous exponents, and a different set of figures. The methodologies (e.g., Okubo-Weiss vs. simple velocity increments, Bayesian estimation vs. standard regression) are distinct enough that the previous execution's outputs are not directly compatible with the new plan's requirements. Therefore, it is safer to restart the analysis from scratch to ensure consistency with the new methodology.",
-    "timestamp": "2026-04-27 15:38:14",
+    "content": "Plan comparator decision recorded: reuse=False, restart_at_step=1. The new plan is a significant restructuring of the analysis pipeline. While it covers similar ground (MSD, VACF, PDFs, Ergodicity), the specific methodologies (e.g., Savitzky-Golay filtering, Hill estimator for residence times, new figure layouts, and a different approach to the regime map) differ substantially from the original plan. The original plan had 10 steps, while the new plan has 3, consolidating the logic into different groupings. Therefore, it is safer and more efficient to restart the execution to ensure all new requirements are met correctly.",
+    "timestamp": "2026-04-27 16:08:04",
     "cost": {
       "Agent": [],
       "Model": [],
@@ -40,7 +40,7 @@
   {
     "name": "terminator",
     "content": "TERMINATE",
-    "timestamp": "2026-04-27 15:38:14",
+    "timestamp": "2026-04-27 16:08:04",
     "cost": {
       "Agent": [],
       "Model": [],

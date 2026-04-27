@@ -1,0 +1,51 @@
+{
+    "sub_tasks": [
+        {
+            "bullet_points": [
+                "Load both datasets from their exact absolute paths (/home/node/work/projects/superdiffusion_v2/point_vortex_tracers.npy and /home/node/work/projects/superdiffusion_v2/levy_walk_trajectories.npy)",
+                "Extract trajectories per N configuration (5, 10, 20, 40) and per Lévy walk β class (1.2, 1.5, 1.8, 2.5) using x_true/y_true fields only for all mechanistic analyses",
+                "Apply Savitzky-Golay filter (window=7) to x_noisy/y_noisy for N=20 and N=40 only; store filtered positions separately",
+                "MSD: Compute ensemble-averaged MSD and per-trajectory MSD vs lag time for all configurations; fit power-law slope α_emp over lags from 10% to 60% of maximum lag using log-log linear regression; print α_emp and R² per configuration",
+                "VACF: Compute velocities as finite differences of x_true/y_true; compute VACF per trajectory first, then ensemble-average; normalize by zero-lag value; find zero-crossing by linear interpolation between last positive and first negative value; print zero-crossing lag per configuration",
+                "Residence times: Compute instantaneous speeds from x_true/y_true finite differences; define trapped state as speed below 25th percentile per N group; compute residence time distributions for N=10, 20, 40; fit power-law tail exponent γ using MLE (Hill estimator) above the 75th percentile of residence times; report γ ± standard error from Fisher information; print results",
+                "Displacement PDFs: Compute both marginal Δx and absolute radial displacement sqrt(Δx²+Δy²) at lag steps 1, 5, 20, 50 for N=40 point-vortex and β=1.5 Lévy walk",
+                "Ergodicity breaking: Compute TAMSD per trajectory and EB(Δt) = Var(TAMSD)/Mean(TAMSD)² for all configurations; print warning if fewer than 10 trajectories are used (point-vortex case); print EB plateau (mean over last 20% of lags) per configuration",
+                "Save all computed arrays (MSD curves, per-trajectory MSDs, VACF curves, residence time data, displacement PDF histograms, EB curves, all fitted parameters) as npz files to the output data folder"
+            ],
+            "sub_task": "Data loading, preprocessing, and all core computations",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Load all precomputed arrays from the output data folder",
+                "Fig 1 (2×4 panels): Top row — one representative 2D trajectory per vortex config (N=5,10,20,40), selected as the trajectory with median total displacement; bottom row — one representative trajectory per Lévy walk β class (1.2,1.5,1.8,2.5); color each by time using viridis; shared colorbar per row labeled \"Time (s)\"; title per panel showing N or β; save as fig1_trajectories_<timestamp>.png",
+                "Fig 2 (2 panels): Left — log-log ensemble-averaged MSD vs lag time for all 4 vortex configs with ±1 std shaded bands, fitted power-law dashed line overlaid, α_emp annotated; right — log-log MSD for all 4 Lévy walk classes with theoretical α=3-β dashed reference lines; add α=1 and α=2 reference lines in both panels; save as fig2_msd_scaling_<timestamp>.png",
+                "Fig 3 (2 panels): Left — VACF vs lag time (log x-axis) for all vortex configs; right — VACF for all Lévy walk classes; horizontal dashed at C_v=0; annotate zero-crossing times; save as fig3_vacf_<timestamp>.png",
+                "Fig 4 (1 panel): Log-log residence time distributions for N=10, 20, 40 with fitted power-law tails annotated with γ values; mark exponential cutoff for N=10 with vertical dashed line; save as fig4_residence_times_<timestamp>.png",
+                "Fig 5 (2 panels): Use absolute radial displacement magnitude PDFs at 4 lag times; left — N=40 point-vortex; right — β=1.5 Lévy walk; overlay Gaussian reference (dashed) and Lévy-stable fit (dotted) at largest lag time with fitted stability index α_stable and scale parameter annotated in panel; log-log axes; save as fig5_displacement_pdfs_<timestamp>.png",
+                "Fig 6 (2 panels): Left — EB(Δt) vs Δt (log-log) for all vortex configs; right — EB(Δt) for all Lévy walk classes; save as fig6_ergodicity_<timestamp>.png",
+                "Fig 7 (1 panel): Regime map scatter — x: EB plateau, y: α_emp; circles for vortex configs (color-coded by N), squares for Lévy walks (color-coded by β); annotate each point with its label; draw color-coded arrows connecting each vortex config to its nearest Lévy walk equivalent by Euclidean distance in the EB-α plane; reference lines α=1, α=2 (horizontal dashed) and EB=0 (vertical dotted); save as fig7_regime_map_<timestamp>.png",
+                "Print all figure save paths"
+            ],
+            "sub_task": "Generate all 7 publication-quality figures from saved computation results",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Write a full Results section (minimum 1500 words) in academic style covering all 7 figures",
+                "Section 1 — Trajectory morphology: Describe visual differences between N=5 (compact, weakly chaotic) and N=40 (space-filling, strongly chaotic) from Fig 1; compare with Lévy walk trajectory morphology (long straight flights vs tortuous vortex paths)",
+                "Section 2 — MSD scaling: Report all α_emp values and R² per N configuration from Fig 2; discuss ballistic vs superdiffusive vs normal regimes; describe the N=40 transition; compare empirical α_emp with Lévy walk theoretical α=3-β values",
+                "Section 3 — VACF and memory: Report zero-crossing lag times per configuration from Fig 3; discuss anti-correlations and what they imply about Hamiltonian memory in the vortex system vs Lévy walks",
+                "Section 4 — Residence times: Report γ ± uncertainty per N from Fig 4; discuss power-law tails as mechanistic evidence for Lévy-like trapping; compare N=10 vs N=40 tail exponents",
+                "Section 5 — Displacement PDF evolution: Describe transition from Gaussian to heavy-tailed distributions with increasing lag time from Fig 5; compare N=40 vortex vs β=1.5 Lévy walk; report fitted α_stable and scale parameter",
+                "Section 6 — Ergodicity breaking: Report EB plateau values per configuration from Fig 6; discuss quenched heterogeneity in vortex systems vs intrinsic Lévy non-ergodicity; note the limitation of only 5 tracers per vortex config",
+                "Section 7 — Regime map: Describe where each vortex configuration sits relative to Lévy walk ground truth from Fig 7; identify the effective Lévy-equivalence mapping (which β class best matches each N)",
+                "Section 8 — Physical interpretation: Connect results to the Kirchhoff-Onsager Hamiltonian, 1/r kernel, and effective fractional diffusion theory",
+                "Include a markdown table summarizing all key numerical results: α_emp per N, γ per N, EB plateau per configuration, zero-crossing lag per configuration, and nearest Lévy walk equivalent per N",
+                "Reference all figures by their exact saved filenames as reported in Step 2 output"
+            ],
+            "sub_task": "Write the comprehensive Results section",
+            "sub_task_agent": "researcher"
+        }
+    ]
+}
