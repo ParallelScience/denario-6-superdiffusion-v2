@@ -1,0 +1,94 @@
+
+###### PROMPT BEGINS ########
+Human: You are a scientific paper classifier. Your task is to determine the most appropriate top-level arXiv archive for the following paper.
+
+**Paper Title:** Finite-Time Scaling and Lévy-Stable Mapping in Chaotic Vortex Flows
+
+**Abstract:** The connection between deterministic chaos in Hamiltonian systems and emergent anomalous transport statistics remains a key challenge, with complex dynamics often simplified to stochastic models like Lévy walks. To probe this relationship, we numerically simulate passive tracer transport in two-dimensional point-vortex systems of varying vortex density ($N$) and contrast the dynamics against a memoryless Lévy walk null model. By analyzing mean squared displacement, velocity autocorrelation, and residence time distributions, while systematically accounting for measurement noise, we uncover a non-monotonic relationship between vortex density and transport behavior. Sparse to intermediate density configurations ($N \le 20$) display near-ballistic motion ($\alpha \approx 2$), whereas the densest system ($N=40$) transitions to a distinct superdiffusive regime ($\alpha \approx 1.68$). Mechanistic analysis reveals this transition is driven by features absent in the stochastic model; the point-vortex system exhibits significant Hamiltonian memory, evidenced by long-lived velocity correlations and heavy-tailed residence time distributions indicative of tracer trapping. Our findings demonstrate that vortex density controls a complex transition between transport regimes and establish that deterministic memory is a crucial feature distinguishing these chaotic flows from their simpler stochastic approximations.
+
+**Archives:**
+- astro-ph: Astrophysics — cosmology, galaxies, stellar physics, planetary science, high-energy astrophysics, instrumentation
+- cond-mat: Condensed Matter — materials science, superconductivity, quantum gases, soft matter, statistical mechanics
+- cs: Computer Science — AI, machine learning, NLP, computer vision, algorithms, networking, security, software
+- econ: Economics — econometrics, general economics, theoretical economics
+- eess: Electrical Engineering and Systems Science — signal processing, image/video processing, audio/speech, control
+- gr-qc: General Relativity and Quantum Cosmology — gravitational physics, gravitational waves, black holes
+- hep-ex: High Energy Physics - Experiment — particle physics experiments, collider results
+- hep-lat: High Energy Physics - Lattice — lattice field theory, lattice QCD
+- hep-ph: High Energy Physics - Phenomenology — theoretical particle physics connected to experiment
+- hep-th: High Energy Physics - Theory — string theory, quantum field theory, supersymmetry
+- math: Mathematics — algebra, geometry, topology, analysis, probability, number theory, optimization
+- math-ph: Mathematical Physics — mathematical methods for physics problems
+- nlin: Nonlinear Sciences — chaos, pattern formation, solitons, integrable systems, self-organization
+- nucl-ex: Nuclear Experiment — experimental nuclear physics
+- nucl-th: Nuclear Theory — nuclear structure theory, hadron models, neutron stars
+- physics: Physics (General) — classical, computational, fluid dynamics, optics, plasma, applied, biological, chemical physics
+- q-bio: Quantitative Biology — biomolecules, genomics, neuroscience, populations, quantitative methods
+- q-fin: Quantitative Finance — computational finance, portfolio management, risk, pricing, trading
+- quant-ph: Quantum Physics — quantum information, computation, entanglement, foundations, optics
+- stat: Statistics — methodology, applications, machine learning (with statistical grounding), computation
+
+Select the single most appropriate archive for this paper. If the paper spans multiple fields, choose the one where the paper makes its primary contribution.
+
+###### PROMPT ENDS ########
+
+###### RESPONSE [model: gemini-3.1-flash-lite-preview] ########
+archive='nlin' justification='The paper focuses on deterministic chaos, Hamiltonian systems, and transport regimes in chaotic flows, which are core topics within the Nonlinear Sciences archive.'
+###### PROMPT BEGINS ########
+Human: You are a scientific paper classifier. You have already determined that this paper belongs to the **nlin** archive on arXiv. Now select the specific subcategory.
+
+**Paper Title:** Finite-Time Scaling and Lévy-Stable Mapping in Chaotic Vortex Flows
+
+**Abstract:** The connection between deterministic chaos in Hamiltonian systems and emergent anomalous transport statistics remains a key challenge, with complex dynamics often simplified to stochastic models like Lévy walks. To probe this relationship, we numerically simulate passive tracer transport in two-dimensional point-vortex systems of varying vortex density ($N$) and contrast the dynamics against a memoryless Lévy walk null model. By analyzing mean squared displacement, velocity autocorrelation, and residence time distributions, while systematically accounting for measurement noise, we uncover a non-monotonic relationship between vortex density and transport behavior. Sparse to intermediate density configurations ($N \le 20$) display near-ballistic motion ($\alpha \approx 2$), whereas the densest system ($N=40$) transitions to a distinct superdiffusive regime ($\alpha \approx 1.68$). Mechanistic analysis reveals this transition is driven by features absent in the stochastic model; the point-vortex system exhibits significant Hamiltonian memory, evidenced by long-lived velocity correlations and heavy-tailed residence time distributions indicative of tracer trapping. Our findings demonstrate that vortex density controls a complex transition between transport regimes and establish that deterministic memory is a crucial feature distinguishing these chaotic flows from their simpler stochastic approximations.
+
+**Methods (if available):** This study combines numerical simulations of a deterministic Hamiltonian system with a stochastic null model to investigate the mechanisms of anomalous transport. We analyze tracer trajectories using a suite of statistical tools designed to characterize diffusion, memory effects, and ergodicity.
+
+\subsection{Numerical simulations and datasets}
+
+The primary dataset consists of numerically simulated trajectories of passive tracers in a two-dimensional point-vortex flow. The system is defined by $N$ point vortices of equal circulation confined within a square domain with periodic boundary conditions. We investigate four distinct configurations corresponding to vortex densities of $N \in \{5, 10, 20, 40\}$, which control the system's chaoticity. For each configuration, a large ensemble of tracer trajectories was generated, with each trajectory simulated for a total duration of 24.95 s. To assess the robustness of our findings to measurement uncertainty, two versions of each trajectory were created: a noise-free (`true`) dataset representing the exact numerical solution, and a `noisy` dataset where independent Gaussian noise with a standard deviation of 0.02 m was added to each position coordinate at every time step.
+
+As a null model for memoryless anomalous transport, we employ a canonical one-dimensional L\'evy walk. Trajectories were generated with flight times drawn from a power-law distribution and constant speed, resulting in superdiffusive transport. Multiple classes of L\'evy walks were generated, characterized by different power-law exponents $\beta$, which directly control the anomalous diffusion exponent $\alpha$. This dataset serves as a benchmark to isolate the effects of Hamiltonian memory present in the point-vortex system.
+
+\subsection{Noise filtering and data pre-processing}
+
+Given the potential for measurement noise to artificially inflate the tails of displacement distributions, a systematic pre-processing step was implemented. We applied a Savitzky-Golay filter to the noisy position trajectories. A sensitivity analysis was performed by varying the filter's window size to find an optimal balance between suppressing high-frequency noise and preserving the underlying physical dynamics. Based on this analysis, a window size of 7 time steps was selected for the $N=20$ and $N=40$ configurations, as it effectively removed noise artifacts while retaining the heavy-tailed characteristics of the velocity increments. For the sparser configurations ($N=5$ and $N=10$), the signal-to-noise ratio was found to be too low for effective filtering; therefore, all mechanistic analyses for these cases were performed exclusively on the noise-free `true` data.
+
+\subsection{Transport and memory analysis}
+
+To characterize the transport properties, we computed the ensemble-averaged mean squared displacement (EAMSD) for each system, defined as $\langle \mathbf{r}^2(\Delta t) \rangle = \langle |\mathbf{r}(t_0 + \Delta t) - \mathbf{r}(t_0)|^2 \rangle$, where the average is taken over all tracers and initial times $t_0$. The anomalous diffusion exponent, $\alpha$, was determined by fitting a power law to the EAMSD data,
+\begin{equation}
+\langle \mathbf{r}^2(\Delta t) \rangle \sim (\Delta t)^\alpha,
+\end{equation}
+over an intermediate range of lag times $\Delta t$ using linear regression on a log-log scale.
+
+To probe the underlying dynamics and memory effects, we analyzed the velocity autocorrelation function (VACF),
+\begin{equation}
+C_v(\Delta t) = \frac{\langle \mathbf{v}(t) \cdot \mathbf{v}(t + \Delta t) \rangle}{\langle |\mathbf{v}(t)|^2 \rangle},
+\end{equation}
+where $\mathbf{v}(t)$ is the tracer velocity. The decay profile of the VACF provides a direct measure of how quickly the system loses memory of its velocity. We compared the functional form of the decay (e.g., exponential versus power-law) and the zero-crossing time across different vortex densities and against the memoryless L\'evy walk model. These findings were further corroborated by computing the mutual information $I(v(t), v(t+\Delta t))$ between velocities at different lag times, which captures potential non-linear correlations missed by the VACF.
+
+The prevalence of tracer trapping was quantified by analyzing residence times. A tracer was defined as being in a "trapped" state whenever its instantaneous speed fell below the 25th percentile of the speed distribution for its respective $N$ configuration. The distribution of durations of these trapping events, $P(\tau_{res})$, was computed. We then fitted a power-law model, $P(\tau_{res}) \sim \tau_{res}^{-\gamma}$, to the tail of this distribution using maximum likelihood estimation to characterize the statistics of long-lived trapping events.
+
+\subsection{Ergodicity and stationarity metrics}
+
+To investigate temporal fluctuations in transport behavior and potential ergodicity breaking, we employed metrics based on the time-averaged MSD (TAMSD), calculated for individual trajectories. The local anomalous exponent, $\alpha(t)$, was estimated using a sliding-window approach on the TAMSD to reveal non-stationarity in the diffusion process.
+
+The degree of ergodicity breaking was quantified using the parameter $EB(\Delta)$, defined as the relative variance of the TAMSD across the ensemble:
+\begin{equation}
+EB(\Delta) = \frac{\text{Var}[\overline{\delta^2(\Delta)}]}{(\text{E}[\overline{\delta^2(\Delta)}])^2},
+\end{equation}
+where $\overline{\delta^2(\Delta)}$ is the TAMSD at lag time $\Delta$, and $\text{Var}[\cdot]$ and $\text{E}[\cdot]$ denote the variance and mean over the ensemble of all tracers, respectively. A value of $EB > 0$ indicates a deviation from ergodicity, reflecting heterogeneity in the transport dynamics among different tracers. This metric was used to quantitatively compare the non-ergodic properties of the point-vortex system with those of the L\'evy walk null model.
+
+**Available subcategories in nlin:**
+- nlin.AO: Adaptation and Self-Organizing Systems — Adaptation, self-organizing systems, statistical physics, fluctuating systems, stochastic processes, interacting particle systems.
+- nlin.CD: Chaotic Dynamics — Dynamical systems, chaos, quantum chaos, topological dynamics, cycle expansions, bifurcations.
+- nlin.CG: Cellular Automata and Lattice Gases — Computational methods, time series analysis, signal processing, wavelets, lattice gases, cellular automata.
+- nlin.PS: Pattern Formation and Solitons — Pattern formation, coherent structures, solitons, nonlinear waves.
+- nlin.SI: Exactly Solvable and Integrable Systems — Exactly solvable systems, integrable PDEs, integrable ODEs, Painleve analysis, inverse scattering.
+
+Select one primary subcategory and up to 3 secondary subcategories (from any archive) that also apply. The primary must be from the list above. Secondary categories may come from any arXiv category if the paper is interdisciplinary.
+
+###### PROMPT ENDS ########
+
+###### RESPONSE [model: gemini-3.1-flash-lite-preview] ########
+primary_category='nlin.CD' secondary_categories=['physics.flu-dyn', 'cond-mat.stat-mech'] justification='The paper focuses on chaotic dynamics in Hamiltonian point-vortex systems, which is the core subject of nlin.CD. It also involves fluid dynamics (physics.flu-dyn) and statistical mechanics of anomalous transport (cond-mat.stat-mech).'

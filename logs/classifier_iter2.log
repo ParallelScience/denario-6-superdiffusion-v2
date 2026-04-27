@@ -1,0 +1,7 @@
+Classifier: Step 1 — Determining archive...
+  Archive: nlin — The paper focuses on deterministic chaos, Hamiltonian systems, and transport regimes in chaotic flows, which are core topics within the Nonlinear Sciences archive.
+Classifier: Step 2 — Determining subcategory within 'nlin'...
+  Primary: nlin.CD
+  Secondary: physics.flu-dyn, cond-mat.stat-mech
+  Justification: The paper focuses on chaotic dynamics in Hamiltonian point-vortex systems, which is the core subject of nlin.CD. It also involves fluid dynamics (physics.flu-dyn) and statistical mechanics of anomalous transport (cond-mat.stat-mech).
+Classification completed in 0 min 2 sec. Cost: $0.0000
