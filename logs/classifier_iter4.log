@@ -1,0 +1,7 @@
+Classifier: Step 1 — Determining archive...
+  Archive: nlin — The paper focuses on chaotic dynamics, ergodicity, and transport properties in Hamiltonian point-vortex systems, which are core topics within the nonlinear sciences.
+Classifier: Step 2 — Determining subcategory within 'nlin'...
+  Primary: nlin.CD
+  Secondary: physics.flu-dyn, cond-mat.stat-mech
+  Justification: The paper focuses on chaotic dynamics in Hamiltonian point-vortex systems, which is the core subject of nlin.CD. It also involves fluid dynamics (tracer transport in vortex flows) and statistical mechanics (anomalous diffusion, ergodicity, and Lévy walks), justifying the cross-listing.
+Classification completed in 0 min 2 sec. Cost: $0.0000

@@ -1,0 +1,8 @@
+{
+  "primary_category": "nlin.CD",
+  "secondary_categories": [
+    "physics.flu-dyn",
+    "cond-mat.stat-mech"
+  ],
+  "justification": "The paper focuses on chaotic dynamics in Hamiltonian point-vortex systems, which is the core subject of nlin.CD. It also involves fluid dynamics (tracer transport in vortex flows) and statistical mechanics (anomalous diffusion, ergodicity, and L\u00e9vy walks), justifying the cross-listing."
+}
