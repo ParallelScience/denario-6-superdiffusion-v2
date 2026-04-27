@@ -1,0 +1,7 @@
+The dataset description contains constraints that directly limit the analysis of the point-vortex tracers:
+
+1. **Limited Sample Size (Class Imbalance):** The `point_vortex_tracers.npy` file contains only 5 tracers per configuration ($N \in \{5, 10, 20, 40\}$). This extremely small sample size per configuration is insufficient to robustly estimate ensemble-averaged statistics like the Time-Averaged Mean Squared Displacement (TAMSD) or the heavy-tailed velocity increment PDFs, particularly for identifying crossover times and ergodicity-breaking parameters.
+
+2. **Measurement Noise:** The `x_noisy` and `y_noisy` fields include Gaussian noise with $\sigma=0.02$ m. Given that the tracer dynamics are analyzed for anomalous diffusion (which relies on precise displacement increments), this noise floor likely obscures the true displacement statistics at small lag times, potentially biasing the estimation of the anomalous exponent $\alpha$ and the tail index $\mu$.
+
+These constraints affect the reliability of the "Lévy-equivalence" mapping and the statistical significance of the fractional diffusion model parameters, as the empirical estimates derived from only 5 tracers per configuration are highly susceptible to sampling variance.
