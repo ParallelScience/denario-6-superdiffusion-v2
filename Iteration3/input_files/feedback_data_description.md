@@ -1,0 +1,5 @@
+The analysis results indicate a failure to reach the asymptotic regime for the point-vortex tracers, which is directly attributable to the dataset constraints:
+
+1. **Limited Observation Time:** The point-vortex simulation duration (T = 24.75 s) is insufficient relative to the characteristic decorrelation times. This explains why the MSD scaling remains near-ballistic (α ≈ 2.0) for N=5, 10, and 20, preventing the observation of the predicted Lévy-stable superdiffusive regime.
+2. **Small Sample Size:** The dataset contains only 5 tracers per configuration. This is insufficient to resolve the statistics of heavy-tailed distributions or to provide stable estimates for the Ergodicity-Breaking (EB) parameter, leading to the reported "NaN" values and high variance in Lyapunov exponent estimates.
+3. **Incomplete Coverage:** The dataset lacks the temporal length required to distinguish between intrinsic Hamiltonian non-ergodicity and the observed non-ergodicity arising from spatial heterogeneity in the initial conditions, as evidenced by the discrepancy between the point-vortex and Lévy walk EB profiles.

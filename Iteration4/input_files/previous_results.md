@@ -1,0 +1,66 @@
+# Results
+
+## 1. Spatial Decomposition and Regime Classification
+
+The Okubo-Weiss (OW) criterion was applied to classify each tracer time point as either rotation-dominated ("trapped," W < 0) or strain-dominated ("chaotic," W > 0), using the temporal velocity gradient tensor estimated from finite differences of the tracer trajectories. The resulting regime fractions are summarised in Figure 1 (regime classification), which presents both the trapped fraction per N and the mean OW parameter as a function of vortex number.
+
+The trapped fractions exhibit a non-monotonic dependence on N: for N = 5, the trapped fraction is negligibly small (0.6%), indicating that the sparse vortex field produces predominantly strain-dominated flow with little coherent rotation at the tracer scale. At N = 10, the trapped fraction rises substantially to 26.8%, consistent with the emergence of quasi-stable vortex pairs and triplets that can temporarily confine tracers in rotation-dominated regions. For N = 20, the trapped fraction drops sharply to 5.8%, and for N = 40 it recovers to 18.6%. This non-monotonic behaviour reflects the competing effects of increasing vortex density: while more vortices create more potential trapping sites, the increased inter-vortex interactions also destabilise individual vortex structures, reducing the lifetime of coherent rotation-dominated regions. The mean OW parameter W̄ is near zero for N = 5 and N = 10 (W̄ ≈ 0 and 10⁻⁵ respectively), rises to 10⁻⁵ for N = 20, and reaches its maximum value of 1.97 × 10⁻³ for N = 40, confirming that the overall strain intensity increases monotonically with vortex number even as the trapped fraction fluctuates non-monotonically.
+
+Importantly, the dominant regime classification (majority of time points) assigns all five tracers in the N = 5, N = 20, and N = 40 groups to the chaotic population, while the N = 10 group contains one predominantly trapped tracer and four chaotic tracers. This near-universal chaotic classification means that the ergodicity-breaking and TAMSD analyses are dominated by the chaotic sub-population across all N, with the trapped sub-population too small to yield statistically independent EB estimates (all trapped EB values are reported as NaN due to insufficient sample size).
+
+---
+
+## 2. Time-Averaged MSD Scaling and Anomalous Exponents
+
+The ensemble-averaged Time-Averaged Mean Squared Displacement (TAMSD) was computed for each N group and fitted to a power law MSD(Δt) ~ Δt^α over the range 5%–80% of the maximum lag time (Figure 2: TAMSD and VACF scaling). The results reveal near-ballistic scaling across all configurations, with ensemble MSD exponents of α = 2.000 ± 0.000 (N = 5), α = 1.973 ± 0.001 (N = 10), α = 2.005 ± 0.000 (N = 20), and α = 1.825 ± 0.006 (N = 40). The near-ballistic values for N = 5, 10, and 20 reflect the finite observation window (T = 24.75 s) relative to the characteristic decorrelation time: tracers in these configurations have not yet entered the asymptotic diffusive regime within the available time series, and the TAMSD is dominated by the ballistic (persistent) phase of the motion.
+
+The N = 40 configuration shows a measurable departure from ballistic scaling (α = 1.825), consistent with the onset of decorrelation at higher vortex densities. This is physically interpretable: with 40 vortices, the inter-vortex interaction time is shorter, the velocity field decorrelates more rapidly, and the tracer begins to sample the superdiffusive regime within the observation window. The ensemble MSD exponents therefore do not directly yield the asymptotic anomalous exponent α in the Lévy-walk sense, but rather reflect the crossover dynamics between ballistic and superdiffusive transport.
+
+The Bayesian estimator, applied to the noisy trajectories (σ = 0.02 m), yields MAP estimates with 95% credible intervals: α = 1.646 [1.565, 1.726] for N = 5; α = 1.796 [1.706, 1.887] for N = 10; α = 1.827 [1.706, 1.947] for N = 20; and α = 1.867 [1.746, 1.987] for N = 40. These Bayesian estimates are systematically lower than the ensemble MSD fits, reflecting the regularising effect of the log-normal likelihood prior and the noise floor. Crucially, the Bayesian estimates show a monotonically increasing trend with N: α increases from 1.646 at N = 5 to 1.867 at N = 40, consistent with the physical expectation that denser vortex fields drive stronger superdiffusion. The credible intervals are non-overlapping between N = 5 and N = 40, confirming that the trend is statistically robust.
+
+For the Lévy walk ground truth, the Bayesian estimator applied to noisy trajectories (σ = 0.05 m) yields MAP estimates of α = 1.354 (β = 1.2, α_theory = 1.8), α = 1.013 (β = 1.5, α_theory = 1.5), α = 1.023 (β = 1.8, α_theory = 1.2), and α = 0.942 (β = 2.5, α_theory = 1.0). The systematic underestimation relative to α_theory — most pronounced for β = 1.2 where the estimator recovers 1.354 against a theoretical value of 1.8 — indicates that the finite observation window (T = 59.9 s) and the noise floor together suppress the apparent scaling exponent. The estimator correctly orders the four β classes (α̂ decreases as β increases), validating its qualitative discriminatory power, but the absolute calibration is biased downward by approximately 0.4–0.5 units for the strongly superdiffusive classes.
+
+---
+
+## 3. Velocity Autocorrelation Function and GLE Memory Kernel
+
+The Velocity Autocorrelation Function (VACF) C_v(t) was computed for each N group using FFT-based estimation and fitted to a power-law decay C_v(t) ~ t^{−β_vacf} over the range 5%–40% of the maximum lag time (Figure 2, bottom row). The fitted VACF decay exponents are β_vacf = 1.360 ± 0.008 (N = 5), β_vacf = 1.395 ± 0.009 (N = 10), β_vacf = 1.345 ± 0.008 (N = 20), and β_vacf = 1.743 ± 0.031 (N = 40).
+
+Under the Generalised Langevin Equation (GLE) framework, the relation α = 2 − β_vacf is expected to hold in the asymptotic superdiffusive regime when the memory kernel decays as a power law. Applying this relation yields predicted exponents of α_check = 0.640 (N = 5), 0.605 (N = 10), 0.655 (N = 20), and 0.257 (N = 40). These values are substantially lower than both the ensemble MSD fits and the Bayesian estimates, indicating a significant inconsistency between the VACF decay and the MSD scaling. This discrepancy has a clear physical interpretation: the GLE relation α = 2 − β_vacf is valid only in the asymptotic long-time limit where the process has fully entered the anomalous diffusion regime. In the present simulations, the VACF is measured over the same finite observation window as the MSD, and the power-law fit to the VACF captures the intermediate-time decay rather than the asymptotic exponent. The relatively steep VACF decay (β_vacf ≈ 1.35–1.74) reflects the rapid decorrelation of tracer velocities due to the chaotic vortex interactions, but the MSD has not yet reached the asymptotic regime where this decay would manifest as subdiffusive scaling. The N = 40 case shows the largest β_vacf (1.743), consistent with the fastest velocity decorrelation at the highest vortex density, and correspondingly the largest departure from ballistic MSD scaling (α_MSD = 1.825).
+
+---
+
+## 4. Ergodicity-Breaking Analysis
+
+The ergodicity-breaking parameter EB(Δt) = Var(TAMSD)/⟨TAMSD⟩² was computed as a function of lag time for each N group and for each Lévy walk β class (Figure 3: EB parameter profiles). Representative values at short (t = 0.6 s), medium (t = 3.1 s), and long (t = 12.5 s) lag times are reported in Table 1.
+
+**Table 1: Ergodicity-breaking parameter EB at representative lag times for point-vortex tracers.**
+
+| N | EB(0.6 s) | EB(3.1 s) | EB(12.5 s) |
+|---|-----------|-----------|------------|
+| 5 | 0.410 | 0.410 | 0.411 |
+| 10 | 0.462 | 0.480 | 0.551 |
+| 20 | 2.621 | 2.627 | 2.635 |
+| 40 | 0.619 | 0.598 | 0.570 |
+
+The EB parameter for N = 5 is approximately constant at EB ≈ 0.41 across all lag times, indicating a moderate but time-independent degree of non-ergodicity. For N = 10, EB increases weakly with lag time from 0.462 to 0.551, suggesting a slow growth of inter-tracer variability at longer times. The N = 20 configuration exhibits a dramatically elevated EB ≈ 2.62–2.64, nearly constant across all lag times, indicating strong non-ergodicity: the five tracers in this group have highly heterogeneous TAMSD values that do not converge with increasing lag time. This is consistent with the onset of Lévy-like transport at N = 20, where individual tracers may experience qualitatively different transport regimes (e.g., one tracer may encounter a close vortex approach and undergo a large displacement while others do not). For N = 40, EB decreases slightly from 0.619 to 0.570 with increasing lag time, suggesting a weak trend toward ergodicity recovery at longer times as the strongly chaotic dynamics homogenise the tracer ensemble.
+
+For the Lévy walk ground truth (lag times 1.5 s, 7.5 s, 30.0 s), the EB parameter grows strongly with lag time for all β classes: EB(1.5 s) ≈ 0.04–0.12, EB(7.5 s) ≈ 0.09–0.59, EB(30.0 s) ≈ 0.84–1.43. This characteristic growth of EB with lag time is the hallmark of non-ergodic Lévy walk dynamics, where the variance of the TAMSD grows faster than its mean squared. The β = 1.2 class (strongest superdiffusion) shows the largest EB at long lag times (1.435), while β = 2.5 (effectively normal diffusion) shows the smallest (0.840). The point-vortex EB profiles are qualitatively distinct from the Lévy walk profiles: the former are approximately constant or weakly varying with lag time, while the latter grow systematically. This difference suggests that the non-ergodicity in the point-vortex system arises primarily from spatial heterogeneity in the initial conditions (different tracers sample different regions of the vortex field) rather than from the intrinsic non-ergodicity of Lévy-stable transport. The N = 20 case, with its anomalously large EB ≈ 2.63, is the closest to Lévy-walk-like non-ergodicity, but the absence of lag-time growth distinguishes it from true Lévy walk behaviour.
+
+---
+
+## 5. Lyapunov Exponent Estimation and Interaction Time Scaling
+
+Global Lyapunov exponents were estimated from the mean log-divergence rate of all tracer pairs within each N group (10 pairs per group, Figure 4: Lyapunov exponent and normalised MSD). The results are: λ = −0.00187 ± 0.01434 s⁻¹ (N = 5), λ = −0.00172 ± 0.02256 s⁻¹ (N = 10), λ = 0.00135 ± 0.03432 s⁻¹ (N = 20), and λ = 0.01932 ± 0.02215 s⁻¹ (N = 40). The large standard deviations relative to the mean values for N = 5, 10, and 20 reflect the small sample size (10 pairs) and the heterogeneity of individual pair divergence rates, which range from strongly negative to strongly positive within each group. Only the N = 40 group yields a mean λ that is positive and of comparable magnitude to its standard deviation, providing weak evidence for positive Lyapunov exponents at the highest vortex density. The characteristic interaction times τ_int = 1/λ are undefined (NaN) for N = 5 and N = 10 due to negative mean λ, τ_int = 738.3 s for N = 20, and τ_int = 51.8 s for N = 40.
+
+The local Okubo-Weiss-based Lyapunov-like exponents provide a complementary picture: mean local exponents increase monotonically with N, from 0.108 ± 0.023 s⁻¹ (N = 5) to 0.323 ± 0.231 s⁻¹ (N = 10), 0.288 ± 0.158 s⁻¹ (N = 20), and 0.729 ± 0.207 s⁻¹ (N = 40). The monotonic increase of local exponents with N is consistent with the physical expectation that denser vortex fields produce more intense local strain rates. The large per-tracer variability (e.g., N = 10 shows values ranging from 0.115 to 0.766 s⁻¹) reflects the spatial heterogeneity of the vortex field.
+
+The normalised MSD collapse test, in which the time axis is rescaled by τ_int, does not yield a universal scaling function across N groups. The fitted power-law exponents on the normalised time axis are identical to those on the physical time axis (since τ_int only rescales the axis, not the exponent), and the two groups with well-defined τ_int (N = 20 and N = 40) have very different τ_int values (738 s vs. 52 s), precluding a meaningful collapse. The VACF decay slopes on the normalised time axis are 0.111 ± 0.008 (N = 5), 0.120 ± 0.009 (N = 10), 0.118 ± 0.008 (N = 20), and 0.315 ± 0.031 (N = 40), showing approximate universality for N = 5, 10, 20 but a clear departure for N = 40. This suggests that the N = 40 system has entered a qualitatively different dynamical regime where the interaction time scale is short enough to produce measurably faster velocity decorrelation.
+
+---
+
+## 6. Velocity Increment PDFs and Tail Analysis
+
+Single-step displacement increments (Δx, Δy) were computed for all tracers in both datasets, and the complementary CDF (CCDF) of the displacement magnitude |Δr| was fitted in log-log space using the top 10% of values to extract the tail exponent μ (Figure 5: velocity increment PDFs and tail exponents). The Lévy-stable stability index was also fitted to the full increment distribution using maximum likelihood estimation.
+
+For the point-vortex dataset, the CCDF tail exponents at lag = 1 step are: μ = 72.46 (N = 5), μ = 6.44 (N = 10), μ = 72.61 (N = 20), and μ =
