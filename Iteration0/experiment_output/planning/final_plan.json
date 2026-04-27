@@ -1,0 +1,93 @@
+{
+    "sub_tasks": [
+        {
+            "bullet_points": [
+                "Load both point_vortex_tracers.npy and levy_walk_trajectories.npy from their exact provided paths",
+                "Print summary statistics: trajectory counts, time ranges, noise levels, vortex configurations, beta values",
+                "Verify integrity of msd_true by recomputing from x_true/y_true and printing max absolute deviation",
+                "Apply Savitzky-Golay filter to noisy coordinates with multiple window sizes (e.g., 5, 11, 21, 31); compute velocity increment PDFs from filtered and true coordinates; quantify max relative tail deviation for each window",
+                "Save sensitivity analysis summary (recommended filter window, max relative tail deviation per window) as a CSV/NPZ file — do NOT save full filtered arrays",
+                "Generate Plot 1: trajectory comparison figure (noisy vs true) with one panel per vortex configuration and one panel per Lévy walk beta class",
+                "Generate Plot 2: filter sensitivity figure showing velocity increment PDFs (log-log) for each window size vs true, for a representative configuration"
+            ],
+            "sub_task": "Data loading, preprocessing, and sensitivity analysis",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Compute TAMSD for each individual tracer and walker using x_true/y_true",
+                "Compute ensemble-averaged TAMSD for each n_vortices configuration and each Lévy walk beta class",
+                "Compute the logarithmic derivative of ensemble TAMSD using a sliding-window log-log regression to obtain time-dependent local exponent alpha(t)",
+                "Identify crossover time as the point where alpha(t) stabilizes (enters the asymptotic regime)",
+                "Fit power-law to the asymptotic TAMSD regime: use the upper 50% of the log-time range from crossover time to 80% of maximum lag time; print the exact fit range to console for each configuration",
+                "Bootstrap alpha_emp error bars by resampling over the ensemble of tracers/walkers (not time steps) within each configuration; use at least 500 resamples",
+                "Save all TAMSD arrays, alpha_emp values, crossover times, and bootstrap confidence intervals to disk as NPZ",
+                "Generate a 4-panel figure: (a) ensemble TAMSD vs time log-log for all n_vortices, (b) ensemble TAMSD vs time log-log for all Lévy walk beta classes, (c) local alpha(t) vs time for all configs, (d) alpha_emp vs n_vortices with bootstrap error bars"
+            ],
+            "sub_task": "TAMSD computation and local scaling analysis",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Compute single-step displacement increments (delta_x, delta_y) from x_true/y_true for both datasets",
+                "Pool increments across all tracers within each n_vortices configuration and across all walkers within each beta class",
+                "Implement Hill estimator: compute Hill tail index as a function of k from k=10 to k=N/4 (N = total pooled increments); select optimal threshold at the plateau using minimum-variance stability criterion over a sliding window of k values; print selected threshold and mu for each configuration",
+                "Fit Lévy-stable distributions via scipy.stats.levy_stable MLE with fixed location parameter (mu=0); subsample to maximum 50,000 increments per configuration if larger; extract stability index alpha_stable",
+                "Compare empirical mu (Hill) against theoretical mu = beta + 1 for Lévy walk classes; compare against theoretical mu = 3 (Cauchy, 1/r kernel) for point-vortex configs",
+                "Save all increment arrays (as NPZ), Hill plot data, and fitted parameters to disk",
+                "Generate a 4-panel figure: (a) log-log PDFs of increments for all n_vortices configs, (b) log-log PDFs for all Lévy walk beta classes, (c) Hill plots (mu vs k) for each config, (d) empirical mu vs theoretical mu comparison plot"
+            ],
+            "sub_task": "Velocity increment PDF and tail index estimation",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "For each n_vortices configuration and each Lévy walk beta class, compute empirical characteristic functions phi(k, t) of the displacement distributions (x_true - x_true[0]) at 5 logarithmically spaced time snapshots between the crossover time and maximum lag time",
+                "Use a k-grid of 100 points from 0.01 to 10 in log-space",
+                "Fit the fractional diffusion model log|phi(k,t)| = -D_alpha * |k|^alpha * t to extract alpha and D_alpha for each configuration using least-squares regression in log-log space",
+                "Perform KS test comparing empirical displacement distributions to the fitted fractional diffusion (symmetric Lévy-stable) model; also compute Anderson-Darling statistic; report both p-values in a printed table and saved CSV",
+                "Save all characteristic function data, fitted alpha, D_alpha, KS and AD results to disk",
+                "Generate a 4-panel figure: (a) log|phi(k,t)| vs |k| log-log for multiple time snapshots (point-vortex), (b) same for Lévy walks, (c) alpha from CF fitting vs n_vortices, (d) D_alpha vs n_vortices"
+            ],
+            "sub_task": "Fractional diffusion modeling via characteristic functions",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Compute TAMSD for each individual tracer/walker (reuse saved results from Step 2 if available)",
+                "Compute EB = Var(TAMSD) / Mean(TAMSD)^2 as a function of lag time for each n_vortices configuration and each Lévy walk beta class; vectorize over lag times",
+                "Use 200 bootstrap resamples (resampling over tracers/walkers) to compute 95% confidence intervals for EB at each lag time",
+                "Compare EB profiles at long lag times between point-vortex and Lévy walk datasets",
+                "Save all EB arrays and confidence intervals to disk as NPZ",
+                "Generate a 4-panel figure: (a) EB vs lag time for all n_vortices configs with CI bands, (b) EB vs lag time for all Lévy walk beta classes with CI bands, (c) EB at long lag time (mean over last 20% of lag range) vs n_vortices, (d) EB at long lag time vs beta"
+            ],
+            "sub_task": "Ergodicity breaking parameter computation",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Compute KL divergence between empirical velocity increment PDFs of each n_vortices configuration and each Lévy walk beta class (using histogram-based density estimation on a common grid); identify best-matching beta for each n_vortices",
+                "Derive and compute finite-N corrected theoretical alpha: use the nearest-neighbor distance scaling r_min ~ (A/N)^(1/2) with A = 400 (domain [-10,10]^2) to regularize the 1/r kernel; express corrected alpha as a function of N and gamma_std; print the formula and numerical predictions for each N",
+                "Estimate proxy Lyapunov exponent: compute pairwise distances between all tracer pairs within each n_vortices configuration over the first 20% of the trajectory; fit log(distance) vs time with linear regression for each pair; report mean slope and standard deviation across all pairs (note: only 5 tracers = 10 pairs per config, so uncertainty will be high)",
+                "Correlate empirical alpha_emp (from Step 2) with proxy Lyapunov exponent across n_vortices configurations",
+                "Compile and print a comprehensive results table: n_vortices, alpha_emp, alpha_CF, mu_Hill, best-matching beta, KL divergence, proxy Lyapunov exponent (mean ± std), finite-N corrected alpha_theory",
+                "Save all mapping results, Lyapunov estimates, and results table to disk as CSV and NPZ",
+                "Generate a 4-panel figure: (a) KL divergence heatmap (n_vortices vs beta), (b) alpha_emp vs n_vortices with Lévy walk alpha_theory overlaid and finite-N corrected alpha_theory, (c) proxy Lyapunov exponent vs n_vortices, (d) finite-N corrected alpha_theory vs empirical alpha_emp scatter"
+            ],
+            "sub_task": "Effective theory mapping and finite-N corrections",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Synthesize all quantitative results from Steps 1–6: TAMSD scaling exponents alpha_emp per n_vortices and per beta class, velocity increment tail indices mu_Hill and alpha_stable, characteristic function fit results (alpha_CF, D_alpha), KS and Anderson-Darling test statistics, ergodicity-breaking parameters EB, effective theory mapping (best-matching beta per n_vortices, KL divergences), proxy Lyapunov exponents, and finite-N corrected alpha_theory",
+                "Interpret the alpha(N) trend in the context of the Kirchhoff-Onsager Hamiltonian and the 1/r vortex kernel prediction, including the finite-N correction",
+                "Discuss the quality of the Lévy walk ground truth validation: how well do MSD-based and tail-fitting estimators recover known alpha and mu values",
+                "Discuss the ergodicity-breaking results and what they imply about the nature of transport in point-vortex systems vs synthetic Lévy walks",
+                "Discuss the effective theory mapping: which Lévy walk class best represents each vortex configuration and what this implies for the physical mechanism of superdiffusion",
+                "Write the full Results section of the paper, explicitly referencing specific figure panel labels (e.g., Fig. 1a, Fig. 2b) using the filenames and panel descriptions from Steps 1–6 execution summaries, so the Results section is self-contained and directly tied to generated outputs"
+            ],
+            "sub_task": "Final results synthesis and paper Results section",
+            "sub_task_agent": "researcher"
+        }
+    ]
+}
