@@ -1,0 +1,105 @@
+{
+    "sub_tasks": [
+        {
+            "bullet_points": [
+                "Load both datasets from their exact absolute paths",
+                "Confirm array shapes, field names, dtype for each dataset",
+                "Count trajectories per N configuration (point-vortex) and per β class (Lévy walk)",
+                "Print basic sanity checks: time range, position range, msd_true range for each group",
+                "Save validated arrays as compressed numpy files to the output folder for clean import in subsequent steps",
+                "Print a concise summary table of all validation results to console"
+            ],
+            "sub_task": "Data loading and basic validation",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Load the validated datasets saved in Step 1",
+                "Compute single-step velocity increments from both x_true/y_true and x_noisy/y_noisy for all N configurations; combine x and y increments into a single pool of absolute increments per configuration",
+                "Apply Hill estimator strictly to the upper tail (absolute increments above the 90th percentile); vary the tail fraction from 5% to 30% in steps to test threshold sensitivity; report μ as a function of tail fraction for both true and noisy data",
+                "Apply Savitzky-Golay filter to noisy trajectories with window sizes 3, 5, 7, 11, 15, 21 steps; for each window size compute the Hill tail index μ of the filtered increments using the same tail fraction identified as stable in the sensitivity test",
+                "Compute summary statistics (mean, std, skewness, kurtosis) of increments for true, noisy, and best-filtered data across all N configurations",
+                "Save all tail indices, filtered increment arrays, and summary statistics to disk",
+                "Produce a multi-panel figure: (a) μ vs tail fraction for true vs noisy data for each N, (b) μ vs Savitzky-Golay window size for each N to identify the plateau, (c) increment PDFs (true vs noisy vs best-filtered) for N=20 and N=40 on log-log axes"
+            ],
+            "sub_task": "Noise sensitivity analysis and filtering validation",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "For each tracer trajectory compute instantaneous speed from true positions using finite differences",
+                "Define the \"trapped\" state using a global velocity threshold derived from the pooled speed distribution across all tracers within each N configuration (e.g., 25th percentile of the pooled speed); identify contiguous trapped intervals for each tracer",
+                "Calculate the distribution of residence times P(τ_res) for each N configuration by pooling across all tracers in that configuration",
+                "Fit power-law P(τ_res) ~ τ_res^{-γ} to the tail using maximum likelihood estimation; report γ and its uncertainty for each N; also test for exponential cutoffs",
+                "Save residence time distributions and fitted parameters to disk",
+                "Produce a multi-panel figure: (a) log-log plots of P(τ_res) for each N with power-law fits overlaid, (b) γ vs N, (c) example tracer speed time series with trapped intervals highlighted for N=5 and N=40"
+            ],
+            "sub_task": "Mechanistic residence time analysis",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Compute VACF C_v(Δt) for all point-vortex tracers (true positions) for each N configuration; average over tracers within each N group; compute up to lag = half the trajectory length",
+                "Compute VACF for all Lévy walk trajectories for each β class; average over trajectories within each β group",
+                "Identify the lag time at which the ensemble-averaged VACF first crosses zero for each N configuration; save these zero-crossing times as the characteristic interaction times for use as window size W in Step 5",
+                "Standardize velocities (zero mean, unit variance) within each configuration before computing Mutual Information I(v(t), v(t+Δt)) as a function of lag Δt using a histogram-based estimator with Scott's rule for bin count; apply uniformly across all configurations and lag times",
+                "Fit exponential and power-law decay models to the VACF tails; report which model fits better and the characteristic decay time/exponent for each N and β",
+                "Save all VACF, zero-crossing times, and MI results to disk",
+                "Produce a multi-panel figure: (a) VACF vs lag time for all N (point-vortex), (b) VACF vs lag time for all β (Lévy walk), (c) MI vs lag time for both datasets overlaid, (d) VACF decay exponents vs N and β"
+            ],
+            "sub_task": "Velocity autocorrelation function and mutual information analysis",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Load VACF zero-crossing times from Step 4; use the zero-crossing lag time for each N configuration as the sliding-window size W",
+                "Compute TAMSD for each individual tracer trajectory using lag times from 1 step up to 1/4 of total trajectory length",
+                "Implement sliding-window analysis: divide each trajectory into overlapping windows of size W; compute local anomalous exponent α(t) by fitting power-law to TAMSD within each window",
+                "Compute ergodicity-breaking parameter EB(Δ) = Var(TAMSD(Δ)) / Mean(TAMSD(Δ))^2 as a function of lag time Δ for both point-vortex (all N) and Lévy walk (all β) datasets",
+                "Save TAMSD arrays, α(t) time series, and EB(Δ) profiles to disk",
+                "Produce a multi-panel figure: (a) TAMSD curves for all tracers per N with ensemble average overlaid, (b) local α(t) vs time for each N, (c) EB(Δ) vs lag time for all N and all β on the same axes"
+            ],
+            "sub_task": "Sliding-window non-stationarity and ergodicity-breaking analysis",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Compute ensemble-averaged MSD (EAMSD) from msd_true for each N configuration and each β class by averaging over all tracers/trajectories at each time step",
+                "Fit power-law α_emp to the EAMSD in the intermediate time range (excluding early ballistic and late saturation regimes) using log-log linear regression; report α_emp and uncertainty for each N and β",
+                "Compute empirical velocity increment PDFs (using absolute increments, consistent binning with Scott's rule) for all N configurations and all β classes; use these empirical histograms (no Lévy-stable fitting) to compute KL divergence between each point-vortex N and each Lévy walk β class; identify the best-matching β for each N",
+                "Construct the state-space map (α_emp, μ) using α_emp from EAMSD fits and μ from Hill estimator (Step 2) for both datasets",
+                "Save all EAMSD fits, KL divergence matrices, and state-space coordinates to disk",
+                "Produce a multi-panel figure: (a) EAMSD vs time for all N and β on log-log axes with power-law fits, (b) α_emp vs N with Lévy walk α_theory as horizontal reference lines, (c) KL divergence heatmap (N vs β)"
+            ],
+            "sub_task": "MSD power-law fitting and Lévy walk null model comparison using empirical KL divergence",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Fit Lévy-stable distributions to velocity increment PDFs for all N configurations and all β classes using scipy.stats.levy_stable; extract stability index α_stable and skewness β_stable",
+                "Construct the full (α_emp, μ) state-space map combining EAMSD α_emp from Step 6 and Hill μ from Step 2; plot both point-vortex and Lévy walk datasets in this space",
+                "Compute KL divergence between point-vortex increment PDFs and their best-matching Lévy walk increment PDFs as a function of N and time window (early vs late trajectory segments) to document where Hamiltonian stickiness dominates",
+                "Derive theoretical α prediction: use μ=2 (Cauchy baseline from 1/r kernel) and finite-N correction via α_theory(N) = 3 - μ(N) where μ(N) is the empirical Hill estimate from Step 2; plot predicted curve vs empirical α_emp(N) from Step 6 and report residuals",
+                "Save all Lévy-stable fit parameters, state-space coordinates, and KL divergence matrices to disk",
+                "Produce a multi-panel figure: (a) state-space map (α_emp vs μ) with both datasets, (b) KL divergence vs N (early vs late windows), (c) theoretical vs empirical α with finite-N correction curve and residuals, (d) increment PDFs for N=40 vs best-matching Lévy walk with Lévy-stable fit overlaid"
+            ],
+            "sub_task": "Phase-space mapping, Lévy-stable fitting, theoretical α prediction, and breakdown analysis",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Synthesize all quantitative results from Steps 1–7 into a coherent Results section organized into clearly labeled subsections corresponding to each analysis: noise sensitivity and filtering, residence time distributions, VACF and memory effects, ergodicity breaking, MSD scaling and Lévy walk comparison, and phase-space mapping",
+                "Report noise sensitivity findings: how the 0.02 m noise floor affects tail index μ for each N, the optimal Savitzky-Golay window size identified from the plateau, and the quantitative difference in μ between true and noisy data",
+                "Report residence time distributions: power-law exponents γ and uncertainties for each N, evidence of exponential cutoffs, and physical interpretation in terms of vortex trapping",
+                "Report VACF and mutual information results: decay rates and model fits for each N and β, VACF zero-crossing times used as window sizes, comparison between point-vortex and Lévy walk memory structures",
+                "Report sliding-window α(t) and EB(Δ) results: stationarity assessment, EB plateau values for each N and β, comparison of ergodicity breaking between datasets",
+                "Report MSD scaling results: α_emp values and uncertainties for each N, comparison with Lévy walk α_theory, best-matching β class for each N from KL divergence analysis",
+                "Report phase-space mapping results: (α_emp, μ) coordinates for all configurations, Lévy-stable fit parameters, KL divergence breakdown by time window, finite-N correction residuals, and the theoretical α_theory(N) = 3 - μ(N) prediction vs empirical values",
+                "Include a summary table consolidating key quantitative outputs (α_emp, μ, γ, EB plateau, best-matching β) for each N configuration",
+                "Reference all figures generated in previous steps"
+            ],
+            "sub_task": "Write the full Results section of the paper",
+            "sub_task_agent": "researcher"
+        }
+    ]
+}
