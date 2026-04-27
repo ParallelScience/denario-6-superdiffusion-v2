@@ -1,0 +1,138 @@
+{
+    "sub_tasks": [
+        {
+            "bullet_points": [
+                "Load both datasets from their exact provided paths; verify field names, array shapes, and value ranges for all fields in both datasets; print a summary of the data structure",
+                "Compute tracer velocities from finite differences of x_true, y_true divided by dt (dt=0.05 s for point-vortex data) as a proxy for local vortex influence",
+                "Estimate the local velocity gradient tensor from the tracer velocity time series using finite differences in time; compute the Okubo-Weiss parameter W = s1^2 + s2^2 - omega^2 where s1, s2 are strain rates and omega is vorticity, all estimated from the temporal velocity gradient",
+                "Classify each tracer time point as \"trapped\" (W < 0, rotation-dominated) or \"chaotic\" (W > 0, strain-dominated) using the Okubo-Weiss criterion",
+                "Assign each tracer to a dominant regime based on the majority of its time points being trapped or chaotic",
+                "Compute the fraction of trapped vs chaotic tracer time points as a function of n_vortices (5, 10, 20, 40)",
+                "Save all classification results (per-tracer dominant regime, per-time-point W values), regime fractions, and tracer velocities to disk",
+                "Print summary statistics: fraction trapped per N, mean W value per N"
+            ],
+            "sub_task": "Data loading, validation, spatial decomposition, and Okubo-Weiss regime classification",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "For each tracer in the point-vortex dataset, compute the Time-Averaged MSD (TAMSD) using x_true, y_true; compute ensemble-averaged MSD for each n_vortices group",
+                "Fit a power-law MSD ~ t^alpha to extract the anomalous exponent alpha_emp for each tracer and each n_vortices group using log-log linear regression",
+                "For the Lévy walk dataset, compute TAMSD and fit alpha for each beta class; compare empirical alpha against alpha_theory",
+                "Compute tracer velocities as (x_true[t+1] - x_true[t]) / dt with dt=0.05 s for point-vortex data and dt=0.1 s for Lévy walk data",
+                "Compute the Velocity Autocorrelation Function (VACF) for each n_vortices group and each Lévy walk beta class using the computed velocities",
+                "Fit the VACF decay as C_v(t) ~ t^{-beta_vacf} and check consistency with alpha via the relation alpha = 2 - beta_vacf",
+                "Save all TAMSD arrays, fitted alpha values with standard errors, VACF arrays, and decay exponents to disk",
+                "Print all fitted alpha values with their standard errors per group and VACF decay exponents"
+            ],
+            "sub_task": "TAMSD computation, MSD power-law fitting, and GLE/VACF analysis",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Load TAMSD results from Step 2 and regime classification from Step 1",
+                "Assign each tracer to the \"trapped\" or \"chaotic\" population based on its dominant regime (majority of time points classified as trapped or chaotic)",
+                "Compute the ergodicity-breaking parameter EB(lag) = Var(TAMSD) / Mean(TAMSD)^2 as a function of lag time for each n_vortices group using all tracers in that group",
+                "Compute EB separately for the \"trapped\" sub-population (tracers predominantly trapped) and the \"chaotic\" sub-population (tracers predominantly chaotic) within each n_vortices group",
+                "Compute EB for each beta class in the Lévy walk dataset",
+                "Save all EB arrays to disk",
+                "Print mean EB values at representative lag times (e.g., short, medium, long) for all groups and sub-populations"
+            ],
+            "sub_task": "Ergodicity-breaking parameter computation",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Estimate the global Lyapunov exponent lambda for each n_vortices configuration by tracking the divergence of all available tracer pairs within the same n_vortices group (at most 10 pairs for N=5); use the mean log-divergence rate across all pairs",
+                "Report the uncertainty (standard deviation across pairs) of the Lyapunov estimate, explicitly noting the small sample size limitation (5 tracers per group)",
+                "Compute the characteristic interaction time tau_int = 1/lambda for each n_vortices group",
+                "Compute local Lyapunov-like exponents for each tracer based on the local rate of change of the Okubo-Weiss parameter (loaded from Step 1)",
+                "Normalize the time axis of the ensemble MSD and VACF (loaded from Step 2) by tau_int and test for universal scaling collapse across n_vortices groups",
+                "Save Lyapunov exponents with uncertainties, interaction times, and normalized MSD/VACF arrays to disk",
+                "Print lambda with uncertainty and tau_int for each n_vortices group"
+            ],
+            "sub_task": "Lyapunov exponent estimation and interaction time scaling",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Compute single-step displacement increments (delta_x, delta_y) for all tracers in both datasets using x_true, y_true",
+                "Compute velocity increment PDFs at multiple lag times (1, 5, 10, 20 steps) for each n_vortices group and each Lévy walk beta class",
+                "Fit the tails of the velocity increment distributions using only the top 10% of absolute displacement increments; perform the fit in log-log space using linear regression on the complementary CDF (CCDF) to avoid binning artifacts; extract the tail exponent mu for each group and lag time",
+                "Fit a Lévy-stable distribution (using scipy.stats.levy_stable) to the full increment distribution to extract the stability index for each group",
+                "Track the evolution of mu as a function of lag time for both datasets",
+                "Save all increment arrays, CCDF arrays, tail exponents, and stability indices to disk",
+                "Print fitted tail exponents and stability indices for all groups and lag times"
+            ],
+            "sub_task": "Velocity increment PDF computation and Lévy-stable tail fitting",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Load velocity increment arrays from Step 5",
+                "Compute Mutual Information I(v(t), v(t+delta_t)) between successive velocity increments at multiple lag times for each n_vortices group and each Lévy walk beta class using a k-nearest-neighbor (kNN) MI estimator with k=5 neighbors, which is robust for heavy-tailed distributions",
+                "For each n_vortices group and Lévy walk beta class, compute the KL divergence between the empirical velocity increment PDF and the best-fit Lévy-stable distribution (from Step 5) using kernel density estimation for the empirical PDF",
+                "Save MI and KL divergence arrays to disk",
+                "Print MI and KL divergence values for all groups and lag times"
+            ],
+            "sub_task": "Mutual information, KL divergence, and Memory-Lévy plane analysis",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Implement a Bayesian estimator for the anomalous exponent alpha using the TAMSD data (loaded from Step 2), with a log-normal likelihood for the TAMSD at each lag time; use a uniform prior on alpha in [0.5, 2.5] sampled on a grid of 200 equally spaced points",
+                "Apply the Bayesian estimator to the noisy Lévy walk trajectories (x_noisy, y_noisy) and compare the posterior alpha estimates against alpha_theory to calibrate the estimator's sensitivity to the 0.05 m noise floor",
+                "Apply the calibrated estimator to the point-vortex noisy trajectories (x_noisy, y_noisy) and report alpha(N) with 95% credible intervals",
+                "Test the distinction between ballistic (alpha=2) and superdiffusive (1 < alpha < 2) regimes using the credible intervals",
+                "Save posterior distributions and credible intervals to disk",
+                "Print alpha estimates with 95% credible intervals for all n_vortices groups and Lévy walk beta classes"
+            ],
+            "sub_task": "Bayesian estimation of anomalous exponents and noise calibration",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Load all saved results from Steps 1-7",
+                "Figure 1: Two-panel figure — (left) fraction of trapped vs chaotic tracers as a function of n_vortices (bar chart), (right) mean Okubo-Weiss parameter W vs n_vortices",
+                "Figure 2: Multi-panel figure combining MSD and VACF — top row: ensemble-averaged TAMSD vs time (log-log) for all n_vortices groups and Lévy walk beta classes with fitted power-law lines and alpha annotations; bottom row: VACF vs time (log-log) with fitted decay exponents and a consistency check panel showing empirical alpha vs 2-beta_vacf",
+                "Figure 3: EB parameter vs lag time for all n_vortices groups (total, trapped, chaotic sub-populations) and Lévy walk beta classes in a multi-panel layout",
+                "Figure 4: Lyapunov exponent lambda vs n_vortices with uncertainty bars, tau_int vs n_vortices, and normalized MSD collapse plot in a multi-panel layout",
+                "Figure 5: Multi-panel figure combining velocity increment PDFs and tail exponents — top panels: velocity increment PDFs (log-log) for all groups at multiple lag times with fitted power-law tails and Lévy-stable fits; bottom panels: tail exponent mu and stability index vs lag time for all groups",
+                "Figure 6: Two-panel figure — (left) Memory-Lévy plane (KL divergence vs Mutual Information) for all groups color-coded by n_vortices and beta; (right) Bayesian alpha(N) summary with credible intervals and comparison to Lévy walk alpha values",
+                "Save all 6 figures as high-resolution PNG files"
+            ],
+            "sub_task": "Generate all analysis plots (6 consolidated figures)",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Load all fitted alpha values, tail exponents, and stability indices from Steps 2, 5, and 7",
+                "For each n_vortices configuration, identify the Lévy walk beta class whose empirical alpha (from MSD) and tail exponent mu most closely match the point-vortex statistics using a composite distance metric combining MSD alpha difference and tail exponent difference",
+                "Derive the theoretical prediction for alpha from vortex density using the 1/r kernel correction: for a uniform random vortex gas the base prediction is mu=2 (Cauchy), with finite-N corrections estimated as a function of N and gamma_std; compute alpha_theory_corrected = 3 - mu_eff for each N",
+                "Compare empirical alpha(N) against the theoretical prediction and the matched Lévy walk alpha values",
+                "Generate a final summary plot: alpha vs n_vortices with theoretical prediction curve, empirical values with credible intervals from Step 7, and matched Lévy walk alpha values; save as high-resolution PNG",
+                "Save the effective theory mapping table to disk",
+                "Print the full mapping table: n_vortices, best-match beta, alpha_pv, alpha_lw, mu_pv, mu_lw, composite distance metric"
+            ],
+            "sub_task": "Effective theory mapping and final summary plot",
+            "sub_task_agent": "engineer"
+        },
+        {
+            "bullet_points": [
+                "Synthesize all quantitative results from Steps 1-9 into a comprehensive Results section written in academic style",
+                "Report spatial decomposition results: trapped/chaotic fractions per N, mean Okubo-Weiss W values, and their physical interpretation in terms of vortex field complexity",
+                "Report GLE/VACF results: memory kernel decay exponents beta_vacf per group, consistency check alpha vs 2-beta_vacf, and what deviations imply about Hamiltonian memory effects",
+                "Report ergodicity-breaking results: EB profiles for total, trapped, and chaotic populations per N, comparison with Lévy walk EB, and interpretation of non-ergodicity sources",
+                "Report Lyapunov exponent results: lambda(N) with uncertainties, tau_int(N), and whether normalized MSD curves collapse to a universal scaling function",
+                "Report velocity increment PDF results: tail exponents mu(N) at multiple lag times, stability indices, lag-time evolution, and comparison between point-vortex and Lévy walk tails",
+                "Report Memory-Lévy plane results: KL divergence and MI values per group, interpretation of the transition from memory-dominated to Lévy-dominated transport",
+                "Report Bayesian alpha estimates with 95% credible intervals for all n_vortices groups and Lévy walk beta classes, and the noise calibration results",
+                "Report the effective theory mapping table and discuss which Lévy walk beta class best matches each n_vortices configuration",
+                "Discuss the theoretical prediction of alpha from vortex density (1/r kernel correction) and its agreement or disagreement with empirical results",
+                "Reference all figures by their content description and figure number (e.g., \"Figure 1: regime classification,\" \"Figure 2: TAMSD and VACF scaling\") rather than by filename"
+            ],
+            "sub_task": "Write the full Results section of the paper",
+            "sub_task_agent": "researcher"
+        }
+    ]
+}

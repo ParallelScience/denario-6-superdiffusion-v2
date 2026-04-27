@@ -2,7 +2,7 @@
   {
     "name": "plan_comparator",
     "content": "",
-    "timestamp": "2026-04-27 15:16:36",
+    "timestamp": "2026-04-27 15:38:14",
     "cost": {
       "Agent": [
         "plan_comparator"
@@ -11,23 +11,23 @@
         "gemini-3.1-flash-lite-preview"
       ],
       "Cost": [
-        0.00180075
+        0.001997
       ],
       "Prompt Tokens": [
-        6141
+        6974
       ],
       "Completion Tokens": [
-        177
+        169
       ],
       "Total Tokens": [
-        6318
+        7143
       ]
     }
   },
   {
     "name": "_Group_Tool_Executor",
-    "content": "Plan comparator decision recorded: reuse=False, restart_at_step=1. The new plan represents a significant shift in the analytical methodology compared to the old plan. While both plans involve analyzing point-vortex and L\\u00e9vy walk datasets, the new plan introduces entirely new analytical frameworks (e.g., residence time analysis, VACF/Mutual Information, sliding-window non-stationarity, and KL divergence-based null model comparison) that were not present in the original plan. The original plan focused on characteristic function fitting and TAMSD power-law slopes, whereas the new plan prioritizes noise sensitivity analysis, mechanistic residence time distributions, and phase-space mapping. Consequently, the computational steps are fundamentally different, and no steps from the old plan can be reused.",
-    "timestamp": "2026-04-27 15:16:36",
+    "content": "Plan comparator decision recorded: reuse=False, restart_at_step=1. The new plan introduces a significantly different analytical framework compared to the old plan. While both plans involve data loading and analysis of point-vortex and L\\u00e9vy walk datasets, the new plan shifts the focus towards Okubo-Weiss regime classification, Lyapunov exponent estimation, Bayesian estimation of anomalous exponents, and a different set of figures. The methodologies (e.g., Okubo-Weiss vs. simple velocity increments, Bayesian estimation vs. standard regression) are distinct enough that the previous execution's outputs are not directly compatible with the new plan's requirements. Therefore, it is safer to restart the analysis from scratch to ensure consistency with the new methodology.",
+    "timestamp": "2026-04-27 15:38:14",
     "cost": {
       "Agent": [],
       "Model": [],
@@ -40,7 +40,7 @@
   {
     "name": "terminator",
     "content": "TERMINATE",
-    "timestamp": "2026-04-27 15:16:36",
+    "timestamp": "2026-04-27 15:38:14",
     "cost": {
       "Agent": [],
       "Model": [],
